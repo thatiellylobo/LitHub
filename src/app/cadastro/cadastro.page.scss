@@ -1,0 +1,112 @@
+.cadastro-pag {
+    height: auto;
+    .background-image {
+     color: none;
+    }
+  
+    .cadastro-form {
+    display: block;
+     color: white;    
+     margin-top: 160px;
+     min-height: 740px;
+     flex-basis: 40%;
+     margin-left: auto;
+     margin-right: auto; 
+    }
+  
+    
+    .custom-item {
+      color: white;
+    }
+  
+    .btao {
+      margin-top: 13px;
+      padding: 19px;
+    }
+  }
+
+  
+  ion-button {
+    margin-bottom: 35px;
+    height: 30px;
+  }
+
+  a {
+    color: black;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: gray;
+  }
+
+  #voltar {
+    color: white;
+    font-size: 33px;
+    margin: 0;
+    padding-left: 10px;
+    padding-top: 38px;
+  }
+
+  ion-item ion-input {
+    --border-radius: 15px; 
+    --padding-top:4px;
+    --inner-border-width: 0px;
+    --highlight-color-focused: black;
+    --highlight-color-hover: transparent; 
+    color: black;
+    }
+    
+
+  h1 {
+    color: black;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 20px;
+    font-size: 35px;
+  }
+
+  p {
+    color: black;
+  }
+
+  .background-image {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: url('/assets/teste.png');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .custom-item {
+    --background: transparent; 
+    --inner-border-width: 0px; 
+    --highlight-background: transparent;    // remove as marcas de incompatibilidade
+    --highlight-border-color: transparent;  // importante, não remover
+    }
+
+    .custom-item-1 {
+      display: flex;
+      justify-content: center; 
+      align-items: center; 
+      flex-direction: column; 
+      height: 100%; 
+    --background: transparent; 
+    --inner-border-width: 0px; 
+    --highlight-background: transparent;    // remove as marcas de incompatibilidade
+    --highlight-border-color: transparent;
+    }
+
+    .text-container {
+      text-align: center; 
+      margin: auto;
+      padding: 5px;
+    }
+
+    .text-container p {
+      margin-bottom: 55px;
+    }

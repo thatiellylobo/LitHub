@@ -1,0 +1,84 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<ion-menu side="end" contentId="main-content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title><div class="logo-container">
+        <span class="logo-lit">Lit</span><span class="logo-hub">Hub</span>
+      </div></ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content class="ion-padding">
+    
+  </ion-content>
+</ion-menu>
+
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar class="top-toolbar">
+      <ion-buttons slot="start">
+        <ion-button>
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+
+      <div class="username-container">
+        <ion-title class="username">username</ion-title>
+        <ion-icon name="mail-outline" class="msg-icon"></ion-icon>
+      </div>
+
+      <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button> 
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-header>
+    <ion-toolbar class="perfil-toolbar">
+      <div class="perfil-container">
+        <ion-card class="foto-perfil-card">
+          <ion-img src="https://via.placeholder.com/130" class="img-perfil"></ion-img>
+        </ion-card>
+        <div class="perfil-info">
+          <ion-title class="nome">Nome</ion-title>
+
+          <div class="estatisticas-container">
+            <ion-grid>
+              <ion-row class="estatisticas">
+                <ion-col class="livros">
+                  <h3><b>10</b></h3>
+                  <p>Livros</p>
+                </ion-col>
+                <ion-col class="seguidores">
+                  <h3><b>150</b></h3>
+                  <p>Seguidores</p>
+                </ion-col>
+                <ion-col class="seguindo">
+                  <h3><b>75</b></h3>
+                  <p>Seguindo</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </div>
+      </div>
+    </ion-toolbar>
+  </ion-header>  
+
+  <ion-content [fullscreen]="true" class="perfil-content">
+    <ion-list>
+      <ion-item *ngFor="let avaliacao of avaliacoes">
+        <ion-thumbnail slot="start">
+          <img [src]="avaliacao.livro.volumeInfo.imageLinks?.thumbnail" alt="Capa do livro">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ avaliacao.livro.volumeInfo.title }}</h2>
+          <p>{{ avaliacao.livro.volumeInfo.authors.join(', ') }}</p>
+          <p>Nota: {{ avaliacao.nota }}</p>
+          <p>Resenha: {{ avaliacao.resenha }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+  
+</div>

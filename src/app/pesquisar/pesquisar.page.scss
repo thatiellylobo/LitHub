@@ -1,0 +1,57 @@
+.custom-searchbar {
+    --background: #ffffff;
+    --border-radius: 20px;
+    --padding-start: 10px;
+    --padding-end: 10px;
+    top: 10px;
+  }
+  
+  ion-segment-button {
+    color: black;
+    border-radius: 7%;
+  
+    &.segment-button-checked {
+      color: black;
+      
+      ion-label {
+        font-weight: bold;
+      }
+  
+      ion-ripple-effect {
+        --background: black;
+      }
+    }
+  }
+  
+  ion-segment-button.segment-button-checked {
+    --indicator-color: black;
+  }
+  
+  ion-toolbar {
+    padding: 0 25px;
+    height: 120px;
+  }
+  
+  ion-thumbnail {
+    width: 80px; 
+    height: auto;
+    margin-right: 10px; 
+  }
+  
+  ion-label h2 {
+    font-size: 1.0em; 
+    font-weight: bold; 
+    color: #333; 
+    margin-left: 5px;
+    margin-top: -30px;
+  }
+  
+  ion-label p {
+    font-size: 0.9em; 
+    color: #666; 
+    margin-left: 5px;
+  }
+  
+  ion-item {
+    padding: 10px; 
+  }

@@ -1,0 +1,53 @@
+.livro-details {
+    text-align: center; 
+  
+    .capa-livro {
+      max-width: 100%; 
+      height: auto; 
+      margin-bottom: 10px;
+    }
+  
+    .livro-titulo {
+      font-size: 1.5em; 
+      margin: 0.5em 0; 
+      color: black;
+    }
+  
+    .livro-autora,
+    .livro-ano,
+    .livro-paginas {
+      margin: 0.5em 0; 
+    }
+  
+    .icone-adicionar {
+      font-size: 30px; 
+      cursor: pointer; 
+      margin-top: 10px; 
+    }
+  }
+  
+  ion-card{
+    background-color: white;
+  }
+
+.sinopse-details {
+    .sinopse-text {
+      font-size: 1.2em; 
+      margin: 0.5em 0;
+      color: black;
+    }
+  
+    .icon-toggle {
+      display: flex; 
+      justify-content: center; 
+      align-items: center;
+      margin-top: 1em;
+  
+      .chevron-icon {
+        font-weight: bold;
+        font-size: 1.5em; 
+        cursor: pointer; 
+      }
+    }
+  }
+  

@@ -1,0 +1,52 @@
+
+<ion-content [fullscreen]="true" class="login-pag">
+  <div class="background-image"></div>
+  <div class="login-form">
+    <ion-card>
+      <ion-card-content>
+        
+        <ion-item class="custom-item">
+          <h1> Login </h1>
+        </ion-item>
+        
+        <ion-item class="custom-item">
+        <ion-input label="Usuário" fill="outline" labelPlacement="floating" placeholder="Digite seu nome de usuário" type="text"></ion-input>
+      </ion-item>
+
+     <br>
+
+     <ion-item class="custom-item">
+        <ion-input label="Senha" fill="outline" labelPlacement="floating" placeholder="Digite sua senha" type="password"></ion-input>
+      </ion-item>
+
+        <div class="botao">
+        <ion-button class="animated-button" shape="round" expand="block" color="dark" expand="block">Entrar</ion-button>
+        </div>
+
+        <ion-text>
+          <a id="senha-link" href="#">Esqueci a senha</a>
+          <a id="cad-link" (click)="irParaCadastro()">Cadastre-se</a>
+          
+        </ion-text>
+
+        <div class="divisao"> 
+          <span class="line"></span>
+          <p> &nbsp;ou entrar com&nbsp; </p>
+          <span class="line"></span>
+         </div>
+         
+        <div class="social-login">
+
+        
+          <ion-button fill="clear">
+            <img src="assets/google-icon.svg"  alt="Google" class="social-icon">
+          </ion-button>
+          <ion-button fill="clear">
+            <img src="assets/outlook-icon.svg" alt="Outlook"  class="social-icon1">
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+ 
+</ion-content>

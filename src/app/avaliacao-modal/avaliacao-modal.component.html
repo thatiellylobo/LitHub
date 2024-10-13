@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-title>Avaliar Livro</ion-title>
+      <ion-buttons slot="end">
+          <ion-button (click)="fecharModal()">
+              <ion-icon name="close"></ion-icon>
+          </ion-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="avaliacao">
+      <ion-icon 
+          *ngFor="let i of [0, 1, 2, 3, 4]; let index = index" 
+          [name]="nota >= index + 1 ? 'star' : (nota === index + 0.5 ? 'star-half-outline' : 'star-outline')"
+          (click)="setNota(index + 1)" 
+          class="estrela"
+          style="cursor: pointer;" 
+      ></ion-icon>
+  </div>
+
+  <div class="resenha-container">
+      <ion-item>
+          <ion-label position="floating"></ion-label>
+          <ion-textarea 
+              [(ngModel)]="resenha" 
+              placeholder="Escreva sua resenha" 
+              rows="6" 
+              class="resenha-textarea"
+          ></ion-textarea>
+      </ion-item>
+  </div>
+
+  <ion-button shape="round" expand="block" color="dark" class="confirmar-btn">Confirmar</ion-button>
+</ion-content>

@@ -1,0 +1,155 @@
+body, html {
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  ion-content.login-pag {
+    position: relative;
+    --background: none; 
+  }
+  
+  .background-image {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background: url('/assets/teste.png');
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    z-index: -1;
+    overflow: hidden;
+  }
+  
+  
+  body.keyboard-is-open .background-image {
+    background-attachment: scroll; 
+  }
+  
+  ion-content {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  ion-card {
+    height: 560px;
+    --border-radius:15px;
+  }
+  
+  ion-item h1 {
+    font-weight: bold;
+    margin: auto;
+    text-decoration: none;
+    padding: 45px;
+    font-size: 35px;
+  }
+  
+  .login-form {
+    bottom: 90px;
+    width: 100%;
+    max-width: 600px;
+    padding: 10px;
+    border-radius: 15px;
+    position: fixed;
+  }
+  
+  .custom-item {
+    --background: transparent; 
+    --inner-border-width: 0px; 
+    --highlight-background: transparent;     // remove as marcas de incompatibilidade
+    --highlight-border-color: transparent;  // importante, não remover
+    }
+  
+  .social-login {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+  }
+  
+  ion-button {
+    font-weight: bold;
+    font-size: 16px;
+    height: 45px;
+  }
+  
+  ion-button:hover {
+    color: transparent;
+  }
+  
+  .animated-button {
+    transition: transform 0.3s ease-in-out;  /* transição */
+    
+    &:active {
+      transform: scale(1.1); /* aumenta o tamanho do botão quando clica */
+    }
+  }
+  
+  .botao {
+    padding: 16px;
+  }
+  
+  
+  ion-item ion-input {
+  --border-radius: 15px; 
+  --padding-top:4px;
+  --inner-border-width: 0px;
+  --highlight-color-focused: black;
+  --highlight-color-hover: transparent; 
+  }
+  
+  
+  a {
+    text-decoration: none;
+    color: gray;
+    display: block;
+    margin: 5px 0;
+    text-align: center;
+  }
+  
+  ion-text #senha-link {
+   line-height: 35px; 
+  }
+  
+  #senha-link:hover {
+    color: red;
+  }
+  
+  #cad-link:hover {
+    color: black;
+    cursor: pointer;
+  }
+  
+  .divisao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .line {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #ccc; 
+  }
+  
+  .divisao p {
+    margin: 0;
+    font-size: 14px;
+    color: black; 
+  }
+  
+  .social-icon {
+    width: 30px;
+    height: 30px;
+    margin-left: 95px;
+  }
+  
+  .social-icon1 {
+    width: 32px;
+    height: 32px;
+    margin-right: 95px;
+  }
+  
+  @media (max-width: 768px) {
+    body {
+        background-image: url('/assets/fundo-teste.png');
+    }
+  }

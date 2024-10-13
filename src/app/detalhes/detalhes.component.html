@@ -1,0 +1,42 @@
+<ion-buttons slot="start">
+  <ion-button (click)="voltar()">
+    <ion-icon name="arrow-back"></ion-icon>
+  </ion-button>
+</ion-buttons>
+
+<ion-card *ngIf="livro">
+  <ion-card-content class="livro-details">
+    <img [src]="livro.volumeInfo.imageLinks?.thumbnail" alt="Capa do livro" class="capa-livro" />
+    
+    <ion-card-title class="livro-titulo">
+      {{ livro.volumeInfo.title }}
+    </ion-card-title>
+
+    <ion-card-subtitle class="livro-autora">
+      {{ livro.volumeInfo.authors ? livro.volumeInfo.authors.join(', ') : 'Autor desconhecido' }}
+    </ion-card-subtitle>
+
+    <p class="livro-ano">{{ livro.volumeInfo.publishedDate?.split('-')[0] || 'Ano desconhecido' }}</p>
+    <p class="livro-paginas"><ion-icon name="book-outline"></ion-icon> {{ livro.volumeInfo.pageCount || 'Número de páginas não disponível' }}</p> 
+
+    <ion-icon name="add-circle-outline" class="icone-adicionar" (click)="abrirModal()"></ion-icon>
+  </ion-card-content>
+</ion-card>
+
+<ion-card>
+  <ion-card-content class="sinopse-details"> 
+    <p (click)="toggleSinopse()" class="sinopse-text"> 
+      <span *ngIf="!sinopseExpandida">{{ getSinopseTruncada() }}</span>
+      <span *ngIf="sinopseExpandida">{{ livro.volumeInfo.description || 'Sinopse não disponível' }}</span>
+    </p>
+
+    <p (click)="toggleSinopse()" class="icon-toggle">
+      <span *ngIf="!sinopseExpandida">
+        <ion-icon name="chevron-down-outline" class="chevron-icon"></ion-icon>
+      </span>
+      <span *ngIf="sinopseExpandida">
+        <ion-icon name="chevron-up-outline" class="chevron-icon"></ion-icon>
+      </span>
+    </p>
+  </ion-card-content>
+</ion-card>
