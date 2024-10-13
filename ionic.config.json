@@ -1,0 +1,7 @@
+{
+  "name": "LitHub",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
