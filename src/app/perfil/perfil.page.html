@@ -9,7 +9,12 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    
+    <div class="logout-container">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+        Sair
+      </ion-button>
+    </div>
   </ion-content>
 </ion-menu>
 
@@ -23,7 +28,7 @@
       </ion-buttons>
 
       <div class="username-container">
-        <ion-title class="username">username</ion-title>
+        <ion-title class="username">{{ username }}</ion-title>
         <ion-icon name="mail-outline" class="msg-icon"></ion-icon>
       </div>
 
@@ -40,7 +45,7 @@
           <ion-img src="https://via.placeholder.com/130" class="img-perfil"></ion-img>
         </ion-card>
         <div class="perfil-info">
-          <ion-title class="nome">Nome</ion-title>
+          <ion-title class="nome">{{ nome }}</ion-title> 
 
           <div class="estatisticas-container">
             <ion-grid>

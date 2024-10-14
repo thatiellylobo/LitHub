@@ -38,7 +38,7 @@ export class PesquisarPage {
 
   // Método para mostrar detalhes do livro selecionado
   mostrarDetalhes(livro: any) {
-    this.livroSelecionado = livro; // Define o livro selecionado
+    this.livroSelecionado = livro; 
   }
 
   limparBusca() {

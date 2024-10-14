@@ -9,38 +9,40 @@
   <div class="cadastro-form">
     <ion-card>
       <ion-card-content>
+        <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()">
+          <ion-item class="custom-item-1">
+            <div class="text-container">
+              <h1>Crie uma nova <br>conta</h1>
+              <p>Já está cadastrado? <a routerLink="/login">Faça login aqui.</a></p>
+            </div>
+          </ion-item>
 
-        <ion-item class="custom-item-1">
-          <div class="text-container">
-          <h1>Crie uma nova <br>conta</h1>
-          <p>Já está cadastrado? <a routerLink="/home">Faça login aqui.</a></p>
+          <ion-item class="custom-item">
+            <ion-input label="Nome" fill="outline" labelPlacement="floating" placeholder="Digite seu nome" type="text" formControlName="nome"></ion-input>
+          </ion-item>
+          <br>
+          <ion-item class="custom-item">
+            <ion-input label="Usuário" fill="outline" labelPlacement="floating" placeholder="Digite seu nome de usuário" type="text" formControlName="usuario"></ion-input>
+          </ion-item>
+          <br>
+          <ion-item class="custom-item">
+            <ion-input label="E-mail" fill="outline" labelPlacement="floating" placeholder="Digite seu e-mail" type="email" formControlName="email"></ion-input>
+          </ion-item>
+          <br>
+          <ion-item class="custom-item">
+            <ion-input label="Senha" fill="outline" labelPlacement="floating" placeholder="Digite sua senha" type="password" formControlName="senha"></ion-input>
+          </ion-item>
+          <br>
+          <ion-item class="custom-item">
+            <ion-input label="Confirmar Senha" fill="outline" labelPlacement="floating" placeholder="Confirme sua senha" type="password" formControlName="confirmarSenha"></ion-input>
+          </ion-item>
+          <br>
+          
+          <br>
+          <div class="btao">
+            <ion-button class="animated-button" expand="block" shape="round" color="dark" type="submit">Cadastrar</ion-button>
           </div>
-        </ion-item>
-
-        <ion-item class="custom-item">
-          <ion-input label="Nome" fill="outline" labelPlacement="floating" placeholder="Digite seu nome" type="text"></ion-input>
-        </ion-item>
-        <br>
-        <ion-item class="custom-item">
-          <ion-input label="Usuário" fill="outline" labelPlacement="floating" placeholder="Digite seu nome de usuário" type="text"></ion-input>
-        </ion-item>
-        <br>
-        <ion-item class="custom-item">
-          <ion-input label="E-mail" fill="outline" labelPlacement="floating" placeholder="Digite seu e-mail" type="email"></ion-input>
-        </ion-item>
-        <br>
-        <ion-item class="custom-item">
-          <ion-input label="Senha" fill="outline" labelPlacement="floating" placeholder="Digite sua senha" type="password"></ion-input>
-        </ion-item>
-        <br>
-        <ion-item class="custom-item">
-          <ion-input label="Confirmar Senha" fill="outline" labelPlacement="floating" placeholder="Confirme sua senha" type="password"></ion-input>
-        </ion-item>
-        <br>
-        <div class="btao">
-          <ion-button class="animated-button" expand="block" shape="round" color="dark" expand="block">Cadastrar</ion-button>
-        </div>
-
+        </form>
       </ion-card-content>
     </ion-card>
   </div>

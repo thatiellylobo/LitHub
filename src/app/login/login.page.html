@@ -1,4 +1,3 @@
-
 <ion-content [fullscreen]="true" class="login-pag">
   <div class="background-image"></div>
   <div class="login-form">
@@ -10,23 +9,22 @@
         </ion-item>
         
         <ion-item class="custom-item">
-        <ion-input label="Usuário" fill="outline" labelPlacement="floating" placeholder="Digite seu nome de usuário" type="text"></ion-input>
-      </ion-item>
+          <ion-input label="Usuário ou e-mail" fill="outline" labelPlacement="floating" placeholder="Digite seu nome de usuário ou e-mail" type="text" [(ngModel)]="emailOuUsuario"></ion-input>
+        </ion-item>
 
-     <br>
+        <br>
 
-     <ion-item class="custom-item">
-        <ion-input label="Senha" fill="outline" labelPlacement="floating" placeholder="Digite sua senha" type="password"></ion-input>
-      </ion-item>
+        <ion-item class="custom-item">
+          <ion-input label="Senha" fill="outline" labelPlacement="floating" placeholder="Digite sua senha" type="password" [(ngModel)]="senha"></ion-input>
+        </ion-item>
 
         <div class="botao">
-        <ion-button class="animated-button" shape="round" expand="block" color="dark" expand="block">Entrar</ion-button>
+          <ion-button class="animated-button" shape="round" expand="block" color="dark" (click)="fazerLogin()">Entrar</ion-button>
         </div>
 
         <ion-text>
           <a id="senha-link" href="#">Esqueci a senha</a>
           <a id="cad-link" (click)="irParaCadastro()">Cadastre-se</a>
-          
         </ion-text>
 
         <div class="divisao"> 
@@ -36,8 +34,6 @@
          </div>
          
         <div class="social-login">
-
-        
           <ion-button fill="clear">
             <img src="assets/google-icon.svg"  alt="Google" class="social-icon">
           </ion-button>
@@ -48,5 +44,4 @@
       </ion-card-content>
     </ion-card>
   </div>
- 
 </ion-content>

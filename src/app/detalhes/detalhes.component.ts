@@ -50,7 +50,7 @@ export class DetalhesComponent {
     const modal = await this.modalController.create({
       component: AvaliacaoModalComponent,
       componentProps: {
-        livro: this.livro // Passa o livro para o modal
+        livro: this.livro 
       }
     });
     return await modal.present();
