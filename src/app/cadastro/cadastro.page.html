@@ -1,10 +1,12 @@
 <ion-content [fullscreen]="true" class="cadastro-pag">
   <div class="background-image">   
+    <div class="back">
     <ion-buttons slot="start">
       <ion-button id="voltar" routerLink="/login" fill="clear">
         <ion-icon slot="start" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
+  </div>
   </div>
   <div class="cadastro-form">
     <ion-card>
@@ -30,11 +32,13 @@
           </ion-item>
           <br>
           <ion-item class="custom-item">
-            <ion-input label="Senha" fill="outline" labelPlacement="floating" placeholder="Digite sua senha" type="password" formControlName="senha"></ion-input>
+           <ion-input label="Senha" fill="outline" labelPlacement="floating" placeholder="Digite sua senha" type="password" [type]="passwordType" formControlName="senha"></ion-input>
+           <ion-icon [name]="passwordIcon" (click)="togglePasswordVisibility()" class="eye-icon"></ion-icon>
           </ion-item>
           <br>
           <ion-item class="custom-item">
-            <ion-input label="Confirmar Senha" fill="outline" labelPlacement="floating" placeholder="Confirme sua senha" type="password" formControlName="confirmarSenha"></ion-input>
+            <ion-input label="Confirmar Senha" fill="outline" labelPlacement="floating" placeholder="Confirme sua senha" [type]="passwordType" type="password" formControlName="confirmarSenha"></ion-input>
+            <ion-icon [name]="passwordIcon" (click)="togglePasswordVisibility()" class="eye-icon"></ion-icon>
           </ion-item>
           <br>
           

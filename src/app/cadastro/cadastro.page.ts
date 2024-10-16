@@ -19,6 +19,8 @@ export class CadastroPage implements OnInit {
   email: string = '';
   senha: string = '';
   confirmarSenha: string = '';
+  passwordType: string = 'password'; 
+  passwordIcon: string = 'eye-off';  
 
   constructor(
     private authService: AuthService,
@@ -89,5 +91,15 @@ export class CadastroPage implements OnInit {
       position: 'top' 
     });
     await toast.present();
+  }
+
+  togglePasswordVisibility() {
+    if (this.passwordType === 'password') {
+      this.passwordType = 'text';    
+      this.passwordIcon = 'eye';      
+    } else {
+      this.passwordType = 'password'; 
+      this.passwordIcon = 'eye-off'; 
+    }
   }
 }

@@ -20,7 +20,6 @@ body, html {
     overflow: hidden;
   }
   
-  
   body.keyboard-is-open .background-image {
     background-attachment: scroll; 
   }
@@ -86,6 +85,15 @@ body, html {
     padding: 16px;
   }
   
+  .eye-icon {
+    position: absolute;
+    top: 52%;
+    right: 33px;
+    transform: translateY(-50%);
+    z-index: 10;
+    cursor: pointer;
+    color: var(--ion-color-medium); 
+  }
   
   ion-item ion-input {
   --border-radius: 15px; 
@@ -94,7 +102,6 @@ body, html {
   --highlight-color-focused: black;
   --highlight-color-hover: transparent; 
   }
-  
   
   a {
     text-decoration: none;
@@ -106,6 +113,7 @@ body, html {
   
   ion-text #senha-link {
    line-height: 35px; 
+   cursor: pointer;
   }
   
   #senha-link:hover {

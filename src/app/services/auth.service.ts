@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router'; 
+import { GoogleAuthProvider } from 'firebase/auth';
 
 interface User {
   uid: string;
@@ -86,12 +87,38 @@ async logout() {
     await this.afAuth.signOut();
     console.log('Usuário deslogado com sucesso.');
 
-    // Redirecionar para a tela de login
+    // redirecionar para a tela de login
     this.router.navigate(['/login']);
   } catch (error) {
     console.error('Erro ao deslogar: ', error);
     throw error;
   }
+}
+async recuperarSenha(email: string): Promise<void> {
+  return this.afAuth.sendPasswordResetEmail(email); // para enviar e-mail de recuperação de senha
+}
+
+ verificarEmailCadastrado(email: string) {
+  return this.afAuth.fetchSignInMethodsForEmail(email);
+}
+
+loginComGoogle() {
+  const provider = new GoogleAuthProvider();
+
+  return this.afAuth.signInWithPopup(provider)
+    .then((result) => {
+      console.log('Login com Google bem-sucedido!', result);
+      
+      if (result.user) {
+        console.log('Usuário autenticado, redirecionando...');
+        this.router.navigate(['/tabs/home']);
+      } else {
+        console.log('Usuário não autenticado.');
+      }
+    })
+    .catch((error) => {
+      console.error('Erro no login com Google:', error);
+    });
 }
 }
   

@@ -15,15 +15,21 @@
         <br>
 
         <ion-item class="custom-item">
-          <ion-input label="Senha" fill="outline" labelPlacement="floating" placeholder="Digite sua senha" type="password" [(ngModel)]="senha"></ion-input>
+          <ion-input label="Senha" fill="outline" labelPlacement="floating" placeholder="Digite sua senha" [type]="passwordType" type="password" [(ngModel)]="senha"></ion-input>
+          <ion-icon [name]="passwordIcon" (click)="togglePasswordVisibility()" class="eye-icon"></ion-icon>
         </ion-item>
 
         <div class="botao">
-          <ion-button class="animated-button" shape="round" expand="block" color="dark" (click)="fazerLogin()">Entrar</ion-button>
+          <ion-button class="animated-button" shape="round" expand="block" color="dark" (click)="fazerLogin()" [disabled]="isLoading">
+            <ng-container *ngIf="!isLoading">Entrar</ng-container>
+            <ng-container *ngIf="isLoading">
+              <ion-spinner name="crescent"></ion-spinner>
+            </ng-container>
+          </ion-button>
         </div>
 
         <ion-text>
-          <a id="senha-link" href="#">Esqueci a senha</a>
+          <a id="senha-link" (click)="irParaRecuperarSenha()">Esqueci a senha</a>
           <a id="cad-link" (click)="irParaCadastro()">Cadastre-se</a>
         </ion-text>
 
@@ -34,7 +40,7 @@
          </div>
          
         <div class="social-login">
-          <ion-button fill="clear">
+          <ion-button (click)="loginGoogle()" fill="clear" >
             <img src="assets/google-icon.svg"  alt="Google" class="social-icon">
           </ion-button>
           <ion-button fill="clear">

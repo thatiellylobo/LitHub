@@ -1,34 +1,31 @@
+
 .cadastro-pag {
-    height: auto;
-    .background-image {
-     color: none;
-    }
-  
+   overflow: hidden;
+
     .cadastro-form {
-    display: block;
+     display: block;
+     position: static;
      color: white;    
-     margin-top: 160px;
-     min-height: 740px;
-     flex-basis: 40%;
-     margin-left: auto;
-     margin-right: auto; 
+     margin-top: 50px ;
     }
   
     
     .custom-item {
       color: white;
     }
-  
-    .btao {
-      margin-top: 13px;
-      padding: 19px;
-    }
   }
 
+  .animated-button {
+    font-weight: bold;
+    font-size: 16px;
+    height: 80px;
+  }
   
   ion-button {
-    margin-bottom: 35px;
-    height: 30px;
+    margin-top: -20px;
+    margin-bottom: 5px;
+    padding: 16px;
+    
   }
 
   a {
@@ -41,22 +38,34 @@
   }
 
   #voltar {
+    position: fixed;
     color: white;
-    font-size: 33px;
+    font-size: 27px;
     margin: 0;
     padding-left: 10px;
-    padding-top: 38px;
+    padding-top: 60px; 
   }
+
 
   ion-item ion-input {
     --border-radius: 15px; 
     --padding-top:4px;
+      width: 310px;
     --inner-border-width: 0px;
     --highlight-color-focused: black;
     --highlight-color-hover: transparent; 
-    color: black;
+      color: black;
     }
     
+    .eye-icon {
+      position: absolute;
+      top: 52%;
+      right: 33px;
+      transform: translateY(-50%);
+      z-index: 10;
+      cursor: pointer;
+      color: var(--ion-color-medium); 
+    }
 
   h1 {
     color: black;
@@ -64,6 +73,7 @@
     text-decoration: none;
     padding: 20px;
     font-size: 35px;
+    white-space: nowrap;
   }
 
   p {
@@ -71,6 +81,7 @@
   }
 
   .background-image {
+    overflow: hidden;
     position: fixed;
     width: 100vw;
     height: 100vh;
@@ -79,7 +90,6 @@
     background-repeat: no-repeat;
     background-size: cover;
     z-index: -1;
-    overflow: hidden;
   }
 
   .custom-item {
@@ -108,5 +118,5 @@
     }
 
     .text-container p {
-      margin-bottom: 55px;
+      margin-bottom: 35px;
     }
