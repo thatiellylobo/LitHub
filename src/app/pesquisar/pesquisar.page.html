@@ -7,7 +7,7 @@
       debounce="300"
       class="custom-searchbar"
       [(ngModel)]="searchQuery"
-      (ionInput)="buscarLivros()">
+      (ionInput)="buscar()">
     </ion-searchbar>
     
     <br>
@@ -25,11 +25,10 @@
   <ng-container *ngIf="livroSelecionado; else listaLivros">
     <app-detalhes [livro]="livroSelecionado" (voltarParaLista)="livroSelecionado = null"></app-detalhes>
   </ng-container>
-  <br>
 
   <ng-template #listaLivros>
-    <ion-list>
-      <ion-item *ngFor=" let livro of livros" (click)="mostrarDetalhes(livro)"> 
+    <ion-list *ngIf="tipoBusca === 'livros'">
+      <ion-item *ngFor="let livro of livros" (click)="mostrarDetalhes(livro)"> 
         <ion-thumbnail slot="start">
           <img *ngIf="livro.volumeInfo.imageLinks" [src]="livro.volumeInfo.imageLinks.thumbnail" alt="Capa do livro">
         </ion-thumbnail>
@@ -37,6 +36,16 @@
           <h2>{{ livro.volumeInfo.title }}</h2>
           <p id="autor">{{ livro.volumeInfo.authors ? livro.volumeInfo.authors.join(', ') : 'Autor desconhecido' }}</p>
           <p id="ano">{{ livro.volumeInfo.publishedDate ? livro.volumeInfo.publishedDate.split('-')[0] : 'Ano desconhecido' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="tipoBusca === 'leitores'">
+      <ion-item *ngFor="let leitor of leitores">
+        <ion-label>
+          <h2>{{ leitor.usuario }}</h2>
+          <p>{{ leitor.nome }}</p>
+          <p>{{ leitor.email }}</p>
         </ion-label>
       </ion-item>
     </ion-list>

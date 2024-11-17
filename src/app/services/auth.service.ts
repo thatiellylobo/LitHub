@@ -3,6 +3,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router'; 
 import { GoogleAuthProvider } from 'firebase/auth';
+import firebase from 'firebase/compat/app';
 
 interface User {
   uid: string;
@@ -25,32 +26,55 @@ export class AuthService {
     return await this.afAuth.currentUser; 
   }
 
+  buscarLeitores(searchQuery: string) {
+    return this.firestore.collection('users', ref => 
+      ref.where('usuario', '>=', searchQuery)
+         .where('usuario', '<=', searchQuery + '\uf8ff') 
+    ).valueChanges();
+  }
+
   async register(email: string, password: string, usuario: string, nome: string) {
     try {
-      const userCredential = await this.afAuth.createUserWithEmailAndPassword(
-        email,
-        password
-      );
+      const userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
       const user = userCredential.user;
-
+  
       console.log('Usuário cadastrado:', user);
-
+  
       // Salvar informações do usuário no Firestore
       await this.firestore.collection('users').doc(user?.uid).set({
         uid: user?.uid,
         nome: nome,
         usuario: usuario,
         email: email,
+        seguidores: 0, 
+        seguindo: 0     
       });
-
+  
       this.router.navigate(['/login']); 
-
       return user;
     } catch (error) {
       console.error('Erro ao cadastrar: ', error);
       throw error;
     }
+  }  
+
+  async seguirUsuario(usuarioId: string, seguidorId: string) {
+    const usuarioRef = this.firestore.collection('users').doc(usuarioId);
+    const seguidorRef = this.firestore.collection('users').doc(seguidorId);
+  
+    await usuarioRef.update({ seguidores: firebase.firestore.FieldValue.increment(1) });
+    await seguidorRef.update({ seguindo: firebase.firestore.FieldValue.increment(1) });
+
   }
+  
+  async deixarDeSeguirUsuario(usuarioId: string, seguidorId: string) {
+    const usuarioRef = this.firestore.collection('users').doc(usuarioId);
+    const seguidorRef = this.firestore.collection('users').doc(seguidorId);
+  
+   await usuarioRef.update({ seguidores: firebase.firestore.FieldValue.increment(-1) });
+   await seguidorRef.update({ seguindo: firebase.firestore.FieldValue.increment(-1) });
+
+  }  
 
   async login(emailOrUsername: string, password: string) {
     try {
@@ -81,7 +105,6 @@ export class AuthService {
     }
   }
 
- // auth.service.ts
 async logout() {
   try {
     await this.afAuth.signOut();

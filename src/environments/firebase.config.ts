@@ -1,10 +1,9 @@
 export const firebaseConfig = {
-    apiKey: 'AIzaSyCLo_Gj-ik1k3b7e3PwOKoP0Llws1BrhLE',
-    authDomain: 'lithub-9c160.firebaseapp.com',
-    projectId: 'lithub-9c160',
-    storageBucket: 'lithub-9c160.appspot.com',
-    messagingSenderId: '633938956572',
-    appId: '1:633938956572:web:6ec672d7d8deaf87aeaad9',
-    measurementId: 'G-SQFFVGPP7M'
-    
+    apiKey: "AIzaSyCvIyUW7gjLvxnOIlOEVeHLmiKNoQalDZE",
+    authDomain: "lithub-a30ca.firebaseapp.com",
+    projectId: "lithub-a30ca",
+    storageBucket: "lithub-a30ca.firebasestorage.app",
+    messagingSenderId: "961926238553",
+    appId: "1:961926238553:web:8b0c0c55c7061ee9c6bc48",
+    measurementId: "G-P4VMQWFLLY"
 };

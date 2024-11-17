@@ -7,6 +7,8 @@ import { Router } from '@angular/router';
 interface UserData {
   nome: string;
   usuario: string;
+  seguidores: number;
+  seguindo: number;
 }
 
 @Component({
@@ -18,6 +20,8 @@ export class PerfilPage implements OnInit {
   avaliacoes: any[] = [];
   nome: string = '';
   username: string = '';
+  seguidores: number = 0; 
+  seguindo: number = 0; 
 
   constructor(
     private avaliacaoService: AvaliacaoService, 
@@ -38,14 +42,16 @@ export class PerfilPage implements OnInit {
   }
 
   async carregarPerfil() {
-    const user = await this.authService.getCurrentUser(); 
-
+    const user = await this.authService.getCurrentUser();
+  
     if (user) {
       const doc = await this.firestore.collection('users').doc(user.uid).get().toPromise();
       if (doc && doc.exists) {
-        const userData = doc.data() as UserData; 
+        const userData = doc.data() as UserData;
         this.nome = userData?.nome || '';
         this.username = userData?.usuario || '';
+        this.seguidores = userData?.seguidores || 0; 
+        this.seguindo = userData?.seguindo || 0;     
       } else {
         console.error('Documento não encontrado ou indefinido');
       }
@@ -53,7 +59,7 @@ export class PerfilPage implements OnInit {
       console.error('Usuário não autenticado');
     }
   }
-
+  
   async logout() {
     await this.authService.logout(); 
     this.nome = '';  
