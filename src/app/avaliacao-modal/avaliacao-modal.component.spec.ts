@@ -22,3 +22,4 @@ describe('AvaliacaoModalComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

@@ -1,25 +1,35 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-
-interface Avaliacao {
-  livro: any;
-  nota: number;
-  resenha: string;
-}
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthService } from '../services/auth.service'; 
+import { Timestamp } from 'firebase/firestore';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class AvaliacaoService {
-  private avaliacoes: Avaliacao[] = [];
-  private avaliacoesSubject = new BehaviorSubject<Avaliacao[]>(this.avaliacoes);
 
-  getAvaliacoes() {
-    return this.avaliacoesSubject.asObservable();
+export class AvaliacaoService {
+  constructor(
+    private firestore: AngularFirestore,
+    private authService: AuthService,
+  ) {}
+
+  adicionarAvaliacao(reviewData: { userId: string, bookId: string, rating: number, reviewText: string, timestamp: Date }) {
+    return this.firestore.collection('reviews').add(reviewData)
+      .then(() => console.log('Avaliação salva com sucesso!'))
+      .catch(error => console.error('Erro ao salvar avaliação: ', error));
   }
 
-  adicionarAvaliacao(avaliacao: Avaliacao) {
-    this.avaliacoes.push(avaliacao);
-    this.avaliacoesSubject.next(this.avaliacoes);
+  getAvaliacoesPorUsuario(userId: string) {
+    return this.firestore.collection('reviews', ref =>
+      ref
+        .where('userId', '==', userId) 
+        .orderBy('timestamp', 'desc') 
+    ).valueChanges({ idField: 'id' }); 
+  }
+  
+
+  getAvaliacoesPorLivro(bookId: string) {
+    return this.firestore.collection('reviews', ref => ref.where('bookId', '==', bookId)).valueChanges();
   }
 }
+

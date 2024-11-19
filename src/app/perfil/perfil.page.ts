@@ -9,6 +9,7 @@ interface UserData {
   usuario: string;
   seguidores: number;
   seguindo: number;
+  livrosLidos: number; 
 }
 
 @Component({
@@ -21,7 +22,8 @@ export class PerfilPage implements OnInit {
   nome: string = '';
   username: string = '';
   seguidores: number = 0; 
-  seguindo: number = 0; 
+  seguindo: number = 0;
+  livrosLidos: number = 0; 
 
   constructor(
     private avaliacaoService: AvaliacaoService, 
@@ -31,14 +33,18 @@ export class PerfilPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.carregarAvaliacoes();
     this.carregarPerfil();
   }
 
-  carregarAvaliacoes() {
-    this.avaliacaoService.getAvaliacoes().subscribe(avaliacoes => {
-      this.avaliacoes = avaliacoes;
-    });
+  async carregarAvaliacoes() {
+    const user = await this.authService.getCurrentUser();
+    if (user) {
+      this.avaliacaoService.getAvaliacoesPorUsuario(user.uid).subscribe(avaliacoes => {
+        this.avaliacoes = avaliacoes;
+      });
+    } else {
+      console.error('Usuário não autenticado');
+    }
   }
 
   async carregarPerfil() {
@@ -51,7 +57,9 @@ export class PerfilPage implements OnInit {
         this.nome = userData?.nome || '';
         this.username = userData?.usuario || '';
         this.seguidores = userData?.seguidores || 0; 
-        this.seguindo = userData?.seguindo || 0;     
+        this.seguindo = userData?.seguindo || 0;
+        this.livrosLidos = userData?.livrosLidos || 0;
+        this.carregarAvaliacoes();
       } else {
         console.error('Documento não encontrado ou indefinido');
       }
@@ -59,6 +67,7 @@ export class PerfilPage implements OnInit {
       console.error('Usuário não autenticado');
     }
   }
+
   
   async logout() {
     await this.authService.logout(); 

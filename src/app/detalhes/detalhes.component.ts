@@ -3,6 +3,7 @@ import { GoogleBooksService } from '../services/google-books.service';
 import { AvaliacaoModalComponent } from '../avaliacao-modal/avaliacao-modal.component';
 import { ModalController } from '@ionic/angular';
 
+
 @Component({
   selector: 'app-detalhes',
   templateUrl: './detalhes.component.html',
@@ -16,7 +17,8 @@ export class DetalhesComponent {
 
   constructor(
     private googleBooksService: GoogleBooksService,
-    private modalController: ModalController
+    private modalController: ModalController,
+ 
   ) {}
 
   voltar() {
@@ -59,4 +61,5 @@ export class DetalhesComponent {
   ngOnInit() {
     this.carregarLivrosDaMesmaAutora();
   }
+  
 }

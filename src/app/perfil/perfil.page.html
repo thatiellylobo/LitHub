@@ -3,9 +3,11 @@
 <ion-menu side="end" contentId="main-content">
   <ion-header>
     <ion-toolbar>
-      <ion-title><div class="logo-container">
-        <span class="logo-lit">Lit</span><span class="logo-hub">Hub</span>
-      </div></ion-title>
+      <ion-title>
+        <div class="logo-container">
+          <span class="logo-lit">Lit</span><span class="logo-hub">Hub</span>
+        </div>
+      </ion-title>
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
@@ -21,11 +23,6 @@
 <div class="ion-page" id="main-content">
   <ion-header>
     <ion-toolbar class="top-toolbar">
-      <ion-buttons slot="start">
-        <ion-button>
-          <ion-icon name="arrow-back"></ion-icon>
-        </ion-button>
-      </ion-buttons>
 
       <div class="username-container">
         <ion-title class="username">{{ username }}</ion-title>
@@ -51,9 +48,10 @@
             <ion-grid>
               <ion-row class="estatisticas">
                 <ion-col class="livros">
-                  <h3><b>0</b></h3>
+                  <h3><b>{{ livrosLidos || 0 }}</b></h3>
                   <p>Livros</p>
                 </ion-col>
+                
                 <ion-col class="seguidores">
                   <h3><b>{{ seguidores }}</b></h3>
                   <p>Seguidores</p>
@@ -75,16 +73,19 @@
     <ion-list>
       <ion-item *ngFor="let avaliacao of avaliacoes">
         <ion-thumbnail slot="start">
-          <img [src]="avaliacao.livro.volumeInfo.imageLinks?.thumbnail" alt="Capa do livro">
+          <img [src]="avaliacao.livro?.volumeInfo?.imageLinks?.thumbnail || 'https://via.placeholder.com/150'" alt="Capa do livro">
         </ion-thumbnail>
         <ion-label>
-          <h2>{{ avaliacao.livro.volumeInfo.title }}</h2>
-          <p>{{ avaliacao.livro.volumeInfo.authors.join(', ') }}</p>
-          <p>Nota: {{ avaliacao.nota }}</p>
-          <p>Resenha: {{ avaliacao.resenha }}</p>
+          <h2>{{ avaliacao.livro?.volumeInfo?.title || 'Título não disponível' }}</h2>
+          
+          <p>{{ avaliacao.livro?.volumeInfo?.authors?.join(', ') || 'Autor desconhecido' }}</p>
+        
+          <p><strong>Nota:</strong> {{ avaliacao.rating || 'Não avaliando' }}</p>
+          
+          <p><strong>Resenha:</strong> {{ avaliacao.reviewText || 'Nenhuma resenha disponível' }}</p>
         </ion-label>
       </ion-item>
     </ion-list>
+    
   </ion-content>
-  
 </div>

@@ -47,7 +47,8 @@ export class AuthService {
         usuario: usuario,
         email: email,
         seguidores: 0, 
-        seguindo: 0     
+        seguindo: 0, 
+        livrosLidos: 0    
       });
   
       this.router.navigate(['/login']); 
@@ -124,6 +125,12 @@ async recuperarSenha(email: string): Promise<void> {
  verificarEmailCadastrado(email: string) {
   return this.afAuth.fetchSignInMethodsForEmail(email);
 }
+
+async getCurrentUserId(): Promise<string | null> {
+  const user = await this.afAuth.currentUser;
+  return user ? user.uid : null;
+}
+
 
 loginComGoogle() {
   const provider = new GoogleAuthProvider();
