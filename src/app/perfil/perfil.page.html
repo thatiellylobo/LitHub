@@ -12,7 +12,7 @@
   </ion-header>
   <ion-content class="ion-padding">
     <div class="logout-container">
-      <ion-button (click)="logout()">
+      <ion-button color="dark" (click)="logout()">
         <ion-icon name="log-out-outline"></ion-icon>
         Sair
       </ion-button>
@@ -70,6 +70,9 @@
   </ion-header>  
 
   <ion-content [fullscreen]="true" class="perfil-content">
+    <div class="texto-avaliação">
+    <ion-text>Avaliações</ion-text>
+    </div>
     <ion-list>
       <ion-item *ngFor="let avaliacao of avaliacoes">
         <ion-thumbnail slot="start">
@@ -80,7 +83,15 @@
           
           <p>{{ avaliacao.livro?.volumeInfo?.authors?.join(', ') || 'Autor desconhecido' }}</p>
         
-          <p><strong>Nota:</strong> {{ avaliacao.rating || 'Não avaliando' }}</p>
+          <p><strong>Nota:</strong> <span class="estrelas-container">
+            <ion-icon 
+                *ngFor="let i of [0, 1, 2, 3, 4]" 
+                [name]="avaliacao.rating >= i + 1 ? 'star' : (avaliacao.rating > i && avaliacao.rating < i + 1 ? 'star-half-outline' : 'star-outline')"
+                class="estrela">
+            </ion-icon>
+          </span></p>
+
+
           
           <p><strong>Resenha:</strong> {{ avaliacao.reviewText || 'Nenhuma resenha disponível' }}</p>
         </ion-label>

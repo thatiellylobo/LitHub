@@ -5,6 +5,9 @@
       max-width: 100%; 
       height: auto; 
       margin-bottom: 10px;
+      border-radius: 10px;
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+     background-color: #fff;
     }
   
     .livro-titulo {
@@ -26,16 +29,13 @@
     }
   }
   
-  ion-card{
-    background-color: white;
-  }
-
-.sinopse-details {
+  .sinopse-details {
     .sinopse-text {
       font-size: 1.2em; 
       margin: 0.5em 0;
-      color: black;
+      color: rgb(51, 51, 51);
     }
+
   
     .icon-toggle {
       display: flex; 
@@ -49,5 +49,33 @@
         cursor: pointer; 
       }
     }
-  }
   
+  }
+
+  ion-card h3 {
+    color: black ;
+    font-weight: normal;
+    margin-left: 20px;
+    font-weight: bold;
+    margin-bottom: -5px;
+  }
+
+  .livro-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+
+  .sinopse-card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+  }
+
+  .capa-livro {
+    width: 130px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    margin-right: 10px;
+  }

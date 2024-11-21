@@ -14,6 +14,7 @@ import { timestamp } from 'rxjs';
 export class AvaliacaoModalComponent {
   nota: number = 0;
   resenha: string = '';
+  resenhaConfirmada: boolean = false;
   @Input() livro: any; 
 
   constructor(
@@ -38,24 +39,51 @@ export class AvaliacaoModalComponent {
   }
 
   confirmarAvaliacao() {
-    this.authService.getCurrentUser().then(user => {
+    this.authService.getCurrentUser().then(async (user) => {
       if (user) {
+        const existeAvaliacao = await this.verificarAvaliacaoExistente(user.uid, this.livro.id);
+        if (existeAvaliacao) {
+          console.log('A avaliação já existe. Não será duplicada.');
+          this.modalController.dismiss({
+            resenhaConfirmada: true,
+          });
+          return;
+        }
+  
         const reviewData = {
-          userId: user.uid, 
+          userId: user.uid,
           bookId: this.livro.id,
           rating: this.nota,
           reviewText: this.resenha,
           timestamp: new Date(),
           livro: this.livro,
+          resenhaConfirmada: true,
         };
-        this.avaliacaoService.adicionarAvaliacao(reviewData);
-        this.fecharModal();
+  
+        this.avaliacaoService.adicionarAvaliacao(reviewData)
+          .then(() => {
+            this.modalController.dismiss({
+              resenhaConfirmada: true,
+            });
+          })
+          .catch((error) => {
+            console.error('Erro ao salvar avaliação:', error);
+          });
       } else {
         console.error('Usuário não autenticado');
       }
     });
   }
-
+  
+  async verificarAvaliacaoExistente(userId: string, livroId: string): Promise<boolean> {
+    const resenhaRef = this.firestore.collection('avaliacoes', ref =>
+      ref.where('userId', '==', userId).where('bookId', '==', livroId)
+    ).get();
+  
+    const snapshot = await resenhaRef.toPromise();
+    return snapshot ? !snapshot.empty : false;
+  }
+  
   async marcarComoLido() {
     const user = await this.authService.getCurrentUser();
     if (user) {

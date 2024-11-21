@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { GoogleBooksService } from '../services/google-books.service';
 import { AuthService } from '../services/auth.service';  // Adicione a importação para o AuthService
+import { AvaliacaoService } from '../services/avaliacao.service';
 
 @Component({
   selector: 'app-pesquisar',
@@ -10,14 +11,15 @@ import { AuthService } from '../services/auth.service';  // Adicione a importaç
 export class PesquisarPage {
   placeholder: string = 'Buscar livros, autores...';
   livros: any[] = [];
-  leitores: any[] = [];  // Array para armazenar usuários
+  leitores: any[] = [];  
   searchQuery: string = '';
   livroSelecionado: any;
-  tipoBusca: string = 'livros';  // Definido inicialmente como 'livros'
+  tipoBusca: string = 'livros'; 
 
   constructor(
     private googleBooksService: GoogleBooksService,
-    private authService: AuthService  // Injete o serviço de autenticação
+    private authService: AuthService,
+    private avaliacaoService: AvaliacaoService 
   ) {}
 
   updatePlaceholder(event: CustomEvent) {
@@ -27,8 +29,8 @@ export class PesquisarPage {
     } else if (value === 'leitores') {
       this.placeholder = 'Buscar leitores';
     }
-    this.tipoBusca = value;  // Atualiza o tipo de busca
-    this.limparBusca();  // Limpa os resultados anteriores
+    this.tipoBusca = value; 
+    this.limparBusca(); 
   }
 
   buscar() {
@@ -39,12 +41,21 @@ export class PesquisarPage {
     }
   }
 
-  // Método para buscar livros
-  buscarLivros() {
+  async buscarLivros() {
     if (this.searchQuery.trim() !== '') {
-      this.googleBooksService.buscarLivros(this.searchQuery).subscribe(data => {
-        this.livros = data.items || [];
-        this.livroSelecionado = null;  // Reseta o livro selecionado
+      this.googleBooksService.buscarLivros(this.searchQuery).subscribe(async (data) => {
+        const user = await this.authService.getCurrentUser();
+        if (user) {
+          this.livros = await Promise.all(
+            (data.items || []).map(async (livro: any) => {
+              const resenhaExistente = await this.avaliacaoService.verificarResenhaExistente(user.uid, livro.id);
+              return { ...livro, resenhaConfirmada: resenhaExistente };
+            })
+          );
+        } else {
+          this.livros = data.items || [];
+        }
+        this.livroSelecionado = null;
       }, error => {
         console.error('Erro ao buscar livros:', error);
       });
@@ -53,11 +64,11 @@ export class PesquisarPage {
     }
   }
 
-  // Método para buscar leitores (usuários)
+
   buscarLeitores() {
     if (this.searchQuery.trim() !== '') {
       this.authService.buscarLeitores(this.searchQuery).subscribe(data => {
-        this.leitores = data;  // Atualiza o array de leitores
+        this.leitores = data; 
       }, error => {
         console.error('Erro ao buscar leitores:', error);
       });
@@ -76,4 +87,6 @@ export class PesquisarPage {
   mostrarDetalhes(livro: any) {
     this.livroSelecionado = livro;
   }
+  
 }
+
