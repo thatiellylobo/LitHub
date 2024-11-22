@@ -1,9 +1,9 @@
-<ion-header>
+<ion-header class="modal-header">
   <ion-toolbar>
-      <ion-title>Avaliar Livro</ion-title>
+      <ion-title class="modal-title">Avaliar Livro</ion-title>
       <ion-buttons slot="end">
           <ion-button (click)="fecharModal()">
-              <ion-icon name="close"></ion-icon>
+              <ion-icon color="dark" name="close"></ion-icon>
           </ion-button>
       </ion-buttons>
   </ion-toolbar>
@@ -24,16 +24,16 @@
   </div>
 
   <div class="resenha-container">
-      <ion-item>
+      <ion-item lines="none" class="resenha-item">
           <ion-label position="floating"></ion-label>
           <ion-textarea 
               [(ngModel)]="resenha" 
-              placeholder="Escreva sua resenha" 
+              placeholder="O que você achou deste livro? Compartilhe sua opinião!" 
               rows="6" 
               class="resenha-textarea"
           ></ion-textarea>
       </ion-item>
   </div>
 
-  <ion-button shape="round" expand="block" color="dark" class="confirmar-btn" (click)="marcarComoLido()"  (click)="confirmarAvaliacao()">Publicar</ion-button>
+  <ion-button shape="round" expand="block" color="dark" class="confirmar-btn" (click)="marcarComoLido()"  (click)="confirmarAvaliacao()">Enviar avaliação</ion-button>
 </ion-content>

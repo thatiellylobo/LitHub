@@ -1,15 +1,18 @@
+<ion-content class="pagina-content" fullscreen>
+ <ion-toolbar class="toolbar-fino">
 <ion-buttons slot="start">
-  <ion-button (click)="voltar()">
+  <ion-button (click)="voltar()" size="large" class="btn-voltar">
     <ion-icon name="arrow-back"></ion-icon>
   </ion-button>
 </ion-buttons>
-
+ </ion-toolbar>
+  
 <ion-card *ngIf="livro" class="livro-card">
   <ion-card-content class="livro-details">
-    <!-- Capa do livro -->
+    <!-- capa do livro -->
     <img [src]="livro.volumeInfo.imageLinks?.thumbnail" alt="Capa do livro" class="capa-livro" />
     
-    <!-- Informações do livro -->
+    <!-- informações do livro -->
     <div class="livro-info">
       <ion-card-title class="livro-titulo">
         {{ livro.volumeInfo.title }}
@@ -42,7 +45,9 @@
       <span *ngIf="sinopseExpandida">{{ livro.volumeInfo.description || 'Sinopse não disponível' }}</span>
     </p>
     <p (click)="toggleSinopse()" class="icon-toggle">
+      <span>{{ sinopseExpandida ? 'Ver menos' : 'Ver mais' }}</span>
       <ion-icon [name]="sinopseExpandida ? 'chevron-up-outline' : 'chevron-down-outline'" class="chevron-icon"></ion-icon>
     </p>
   </ion-card-content>
 </ion-card>
+</ion-content>

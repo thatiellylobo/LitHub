@@ -23,6 +23,11 @@ ion-content {
       font-size: 30px;  
       color: #f39c12; 
       cursor: pointer;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .estrela:hover {
+      transform: scale(1.2);
     }
 
     .nota-texto {
@@ -39,9 +44,19 @@ ion-content {
       padding: 0;
     }
   
+    .resenha-item {
+      border-radius: 10px;
+      --background: #ffffff;
+      border: #e7e7e7 solid 1px;
+      --box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
+      padding: 10px;
+    }
+
     .resenha-textarea {
+      font-size: 18px;
       min-height: 100px; 
       max-height: 200px; 
+      --color: #333333;
     }
   
     ion-item {
@@ -67,7 +82,7 @@ ion-content {
       margin-top: auto; 
       border-radius: 25%;
       font-weight: bold;
-      font-size: 17px;
+      font-size: 16px;
       width: 300px;
       margin-left: 40px;
       height: 40px;
@@ -86,3 +101,23 @@ ion-content {
     margin-left: 40px;
     height: 40px;
   }
+
+  .modal-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333; 
+    text-align: left; 
+  }
+
+  ion-icon {
+    font-size: 20px;
+    color: #666666; 
+  }
+
+  .modal-header {
+    --background: #ffffff; 
+    border-bottom: 1px solid #e0e0e0; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+    z-index: 1;
+  }
+  

@@ -15,6 +15,7 @@
       
       ion-label {
         font-weight: bold;
+        color: black;
       }
   
       ion-ripple-effect {
@@ -40,6 +41,13 @@
 
   ion-thumbnail img {
     border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  ion-thumbnail img:hover {
+    transform: scale(1.05); 
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
   }
   
   ion-label h2 {
@@ -49,7 +57,7 @@
     margin-left: 5px;
     margin-top: -30px;
   }
-  
+
   ion-label p {
     font-size: 0.9em; 
     color: #666; 
@@ -59,6 +67,8 @@
   ion-item {
     padding: 10px; 
     cursor: pointer;
+    --border-color: #a0a0a0;
+   
   }
 
   
