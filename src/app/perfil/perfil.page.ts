@@ -33,25 +33,18 @@ export class PerfilPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.carregarPerfil();
+    this.authService.user$.subscribe(user => {
+      if (user) {
+        this.carregarPerfil(user.uid);
+      } else {
+        console.error('Usuário não autenticado');
+        this.router.navigate(['/login']);
+      }
+    });
   }
 
-  async carregarAvaliacoes() {
-    const user = await this.authService.getCurrentUser();
-    if (user) {
-      this.avaliacaoService.getAvaliacoesPorUsuario(user.uid).subscribe(avaliacoes => {
-        this.avaliacoes = avaliacoes;
-      });
-    } else {
-      console.error('Usuário não autenticado');
-    }
-  }
-
-  async carregarPerfil() {
-    const user = await this.authService.getCurrentUser();
-  
-    if (user) {
-      const doc = await this.firestore.collection('users').doc(user.uid).get().toPromise();
+  carregarPerfil(uid: string) {
+    this.firestore.collection('users').doc(uid).get().toPromise().then(doc => {
       if (doc && doc.exists) {
         const userData = doc.data() as UserData;
         this.nome = userData?.nome || '';
@@ -59,16 +52,19 @@ export class PerfilPage implements OnInit {
         this.seguidores = userData?.seguidores || 0; 
         this.seguindo = userData?.seguindo || 0;
         this.livrosLidos = userData?.livrosLidos || 0;
-        this.carregarAvaliacoes();
+        this.carregarAvaliacoes(uid);
       } else {
         console.error('Documento não encontrado ou indefinido');
       }
-    } else {
-      console.error('Usuário não autenticado');
-    }
+    });
   }
 
-  
+  carregarAvaliacoes(uid: string) {
+    this.avaliacaoService.getAvaliacoesPorUsuario(uid).subscribe(avaliacoes => {
+      this.avaliacoes = avaliacoes;
+    });
+  }
+
   async logout() {
     await this.authService.logout(); 
     this.nome = '';  
