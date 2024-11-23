@@ -183,3 +183,16 @@
   strong {
     font-weight: bold;
   }
+
+  .item-avaliacao {
+    position: relative;
+  }
+  
+  .botao-editar-topo {
+    position: absolute;
+    top: -16px; 
+    right: -13px; 
+    margin-top: 18px;
+    color: black;
+    font-size: 18px;
+  }

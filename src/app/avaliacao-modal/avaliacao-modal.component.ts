@@ -3,8 +3,6 @@ import { ModalController } from '@ionic/angular';
 import { AvaliacaoService } from '../services/avaliacao.service';
 import { AuthService } from '../services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { timestamp } from 'rxjs';
-
 
 @Component({
   selector: 'app-avaliacao-modal',
@@ -16,6 +14,8 @@ export class AvaliacaoModalComponent {
   resenha: string = '';
   resenhaConfirmada: boolean = false;
   @Input() livro: any; 
+  @Input() avaliacaoExistente: any; 
+  botaoTexto: string = 'Enviar Avaliação';   
 
   constructor(
     private modalController: ModalController,
@@ -23,6 +23,14 @@ export class AvaliacaoModalComponent {
     private authService: AuthService,
     private firestore: AngularFirestore,
   ) {}
+
+  ngOnInit() {
+    if (this.avaliacaoExistente) {
+      this.botaoTexto = 'Editar';
+      this.nota = this.avaliacaoExistente.rating; 
+      this.resenha = this.avaliacaoExistente.reviewText; 
+    }
+  }
 
   fecharModal() {
     this.modalController.dismiss();
@@ -38,76 +46,57 @@ export class AvaliacaoModalComponent {
     }
   }
 
-  confirmarAvaliacao() {
-    this.authService.getCurrentUser().then(async (user) => {
-      if (user) {
-        const existeAvaliacao = await this.verificarAvaliacaoExistente(user.uid, this.livro.id);
-        if (existeAvaliacao) {
-          console.log('A avaliação já existe. Não será duplicada.');
-          this.modalController.dismiss({
-            resenhaConfirmada: true,
-          });
-          return;
-        }
-  
-        const reviewData = {
-          userId: user.uid,
-          bookId: this.livro.id,
-          rating: this.nota,
-          reviewText: this.resenha,
-          timestamp: new Date(),
-          livro: this.livro,
-          resenhaConfirmada: true,
-        };
-  
-        this.avaliacaoService.adicionarAvaliacao(reviewData)
-          .then(() => {
-            this.modalController.dismiss({
-              resenhaConfirmada: true,
-            });
-          })
-          .catch((error) => {
-            console.error('Erro ao salvar avaliação:', error);
-          });
-      } else {
-        console.error('Usuário não autenticado');
-      }
-    });
-  }
-  
-  async verificarAvaliacaoExistente(userId: string, livroId: string): Promise<boolean> {
-    const resenhaRef = this.firestore.collection('avaliacoes', ref =>
-      ref.where('userId', '==', userId).where('bookId', '==', livroId)
-    ).get();
-  
-    const snapshot = await resenhaRef.toPromise();
-    return snapshot ? !snapshot.empty : false;
-  }
-  
-  async marcarComoLido() {
+  async confirmarAvaliacao() {
     const user = await this.authService.getCurrentUser();
     if (user) {
-      const userRef = this.firestore.collection('users').doc(user.uid);
-  
       try {
-        const userDoc = await userRef.get().toPromise();
-
-        if (userDoc && userDoc.exists) {
-          const userData = userDoc.data() as any;
-          const livrosLidosAtualizados = (userData.livrosLidos || 0) + 1;
-  
-          await userRef.update({
-            livrosLidos: livrosLidosAtualizados,
+        if (this.avaliacaoExistente) {
+         
+          console.log('Atualizando avaliação existente.');
+          const resenhaId = this.avaliacaoExistente.id; 
+          await this.firestore.collection('reviews').doc(resenhaId).update({
+            rating: this.nota,
+            reviewText: this.resenha,
+            timestamp: new Date(),
           });
-  
-          return livrosLidosAtualizados;
         } else {
-          console.log('Documento não encontrado');
-          return 0; 
+          
+          console.log('Criando nova avaliação.');
+          const reviewData = {
+            userId: user.uid,
+            bookId: this.livro.id,
+            rating: this.nota,
+            reviewText: this.resenha,
+            timestamp: new Date(),
+            livro: this.livro,
+            resenhaConfirmada: true,
+          };
+          await this.avaliacaoService.adicionarAvaliacao(reviewData);
         }
+
+        this.modalController.dismiss({
+          resenhaConfirmada: true,
+        });
       } catch (error) {
-        console.error('Erro ao acessar o documento do usuário:', error);
-        return 0; 
+        console.error('Erro ao salvar ou atualizar avaliação:', error);
+      }
+    } else {
+      console.error('Usuário não autenticado');
+    }
+  }
+
+  async excluirAvaliacao() {
+    if (this.avaliacaoExistente) {
+      const resenhaId = this.avaliacaoExistente.id;
+      try {
+      
+        await this.firestore.collection('reviews').doc(resenhaId).delete();
+        console.log('Avaliação excluída com sucesso.');
+        this.modalController.dismiss({
+          resenhaConfirmada: false,
+        });
+      } catch (error) {
+        console.error('Erro ao excluir avaliação:', error);
       }
     }
   }

@@ -55,7 +55,7 @@ export class DetalhesComponent {
   }
 
   async verificarResenhaExistente(livroId: string, usuarioId: string): Promise<boolean> {
-    const resenhaRef = this.firestore.collection('avaliacoes', ref =>
+    const resenhaRef = this.firestore.collection('reviews', ref =>
       ref.where('livroId', '==', livroId).where('usuarioId', '==', usuarioId)
     ).get();
 

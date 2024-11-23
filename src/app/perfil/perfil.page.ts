@@ -1,16 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { AvaliacaoModalComponent } from '../avaliacao-modal/avaliacao-modal.component';  // Importando o modal
 import { AvaliacaoService } from '../services/avaliacao.service';
 import { AuthService } from '../services/auth.service'; 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-
-interface UserData {
-  nome: string;
-  usuario: string;
-  seguidores: number;
-  seguindo: number;
-  livrosLidos: number; 
-}
 
 @Component({
   selector: 'app-perfil',
@@ -29,7 +23,8 @@ export class PerfilPage implements OnInit {
     private avaliacaoService: AvaliacaoService, 
     private authService: AuthService,
     private router: Router,
-    private firestore: AngularFirestore 
+    private firestore: AngularFirestore,
+    private modalController: ModalController  
   ) {}
 
   ngOnInit() {
@@ -46,7 +41,7 @@ export class PerfilPage implements OnInit {
   carregarPerfil(uid: string) {
     this.firestore.collection('users').doc(uid).get().toPromise().then(doc => {
       if (doc && doc.exists) {
-        const userData = doc.data() as UserData;
+        const userData = doc.data() as any;
         this.nome = userData?.nome || '';
         this.username = userData?.usuario || '';
         this.seguidores = userData?.seguidores || 0; 
@@ -62,6 +57,7 @@ export class PerfilPage implements OnInit {
   carregarAvaliacoes(uid: string) {
     this.avaliacaoService.getAvaliacoesPorUsuario(uid).subscribe(avaliacoes => {
       this.avaliacoes = avaliacoes;
+      this.livrosLidos = this.avaliacoes.length; 
     });
   }
 
@@ -71,4 +67,32 @@ export class PerfilPage implements OnInit {
     this.username = ''; 
     this.router.navigate(['/login']); 
   }
-}
+
+  
+  abrirModalEdicao(avaliacao: any) {
+    this.modalController.create({
+      component: AvaliacaoModalComponent,
+      componentProps: {
+        livro: avaliacao.livro, 
+        avaliacaoExistente: avaliacao  
+      }
+    }).then(modal => {
+      modal.present();
+    });
+  }
+
+  excluirAvaliacao(avaliacaoId: string) {
+    this.firestore.collection('reviews').doc(avaliacaoId).delete().then(() => {
+      console.log('Avaliação excluída com sucesso');
+  
+     
+      this.authService.getCurrentUser().then(user => {
+        if (user) {
+          this.carregarAvaliacoes(user.uid); 
+        }
+      });
+    }).catch(error => {
+      console.error('Erro ao excluir avaliação:', error);
+    });
+  }
+}  

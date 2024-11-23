@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { GoogleBooksService } from '../services/google-books.service';
-import { AuthService } from '../services/auth.service';  // Adicione a importação para o AuthService
+import { AuthService } from '../services/auth.service';  
 import { AvaliacaoService } from '../services/avaliacao.service';
 
 @Component({
@@ -87,6 +87,5 @@ export class PesquisarPage {
   mostrarDetalhes(livro: any) {
     this.livroSelecionado = livro;
   }
-  
 }
 
