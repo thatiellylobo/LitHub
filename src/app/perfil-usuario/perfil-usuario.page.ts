@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { AvaliacaoService } from '../services/avaliacao.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -16,11 +17,13 @@ export class PerfilUsuarioPage implements OnInit {
   seguindo: boolean = false;  
   livrosLidos: number = 0;
 
+
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
     private avaliacaoService: AvaliacaoService,
-    private firestore: AngularFirestore
+    private firestore: AngularFirestore,
+    private navCtrl: NavController
   ) {}
 
   async ngOnInit() {
@@ -30,6 +33,10 @@ export class PerfilUsuarioPage implements OnInit {
       this.carregarPerfil(uid);
       this.carregarAvaliacoes(uid);
     }
+  }
+
+  voltar() {
+    this.navCtrl.back();
   }
 
   carregarPerfil(uid: string) {
@@ -86,3 +93,5 @@ export class PerfilUsuarioPage implements OnInit {
     }
   }  
 }
+
+
