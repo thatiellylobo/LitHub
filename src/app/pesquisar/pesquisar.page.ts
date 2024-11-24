@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { GoogleBooksService } from '../services/google-books.service';
 import { AuthService } from '../services/auth.service';  
 import { AvaliacaoService } from '../services/avaliacao.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-pesquisar',
@@ -19,7 +20,8 @@ export class PesquisarPage {
   constructor(
     private googleBooksService: GoogleBooksService,
     private authService: AuthService,
-    private avaliacaoService: AvaliacaoService 
+    private avaliacaoService: AvaliacaoService,
+    private router: Router
   ) {}
 
   updatePlaceholder(event: CustomEvent) {
@@ -40,6 +42,11 @@ export class PesquisarPage {
       this.buscarLeitores();
     }
   }
+
+  abrirPerfil(uid: string) {
+    this.router.navigate(['./perfil-usuario', uid]);
+  }
+
 
   async buscarLivros() {
     if (this.searchQuery.trim() !== '') {

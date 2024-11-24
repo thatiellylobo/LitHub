@@ -47,33 +47,37 @@ export class AvaliacaoModalComponent {
   }
 
   async confirmarAvaliacao() {
-    const user = await this.authService.getCurrentUser();
+    const user = await this.authService.getCurrentUser(); // Já pega o usuário autenticado
     if (user) {
       try {
+        // Buscando os dados completos do usuário
+        const userData = await this.authService.getUserData(user.uid);
+        const nomeUsuario = userData?.nome || 'Usuário não encontrado'; 
+        
         if (this.avaliacaoExistente) {
-         
           console.log('Atualizando avaliação existente.');
-          const resenhaId = this.avaliacaoExistente.id; 
+          const resenhaId = this.avaliacaoExistente.id;
           await this.firestore.collection('reviews').doc(resenhaId).update({
             rating: this.nota,
             reviewText: this.resenha,
+            nome: nomeUsuario,  
             timestamp: new Date(),
           });
         } else {
-          
           console.log('Criando nova avaliação.');
           const reviewData = {
             userId: user.uid,
             bookId: this.livro.id,
             rating: this.nota,
             reviewText: this.resenha,
+            nome: nomeUsuario,  
             timestamp: new Date(),
             livro: this.livro,
             resenhaConfirmada: true,
           };
           await this.avaliacaoService.adicionarAvaliacao(reviewData);
         }
-
+  
         this.modalController.dismiss({
           resenhaConfirmada: true,
         });
@@ -84,7 +88,7 @@ export class AvaliacaoModalComponent {
       console.error('Usuário não autenticado');
     }
   }
-
+  
   async excluirAvaliacao() {
     if (this.avaliacaoExistente) {
       const resenhaId = this.avaliacaoExistente.id;

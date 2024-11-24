@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AuthService } from '../services/auth.service'; 
 import { Firestore, Timestamp } from 'firebase/firestore';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -41,7 +44,52 @@ export class AvaliacaoService {
   getAvaliacoesPorLivro(bookId: string) {
     return this.firestore.collection('reviews', ref => ref.where('bookId', '==', bookId)).valueChanges();
   }
-}
 
+  getAvaliacoesGlobaisPaginadas(ultimoDocumento: any = null): Observable<any> {
+    let query = this.firestore
+      .collection('reviews', ref => {
+        let queryRef = ref.orderBy('timestamp', 'desc').limit(10);
+        if (ultimoDocumento) {
+          queryRef = queryRef.startAfter(ultimoDocumento);
+        }
+        return queryRef;
+      })
+      .snapshotChanges();
 
-
+      return query.pipe(
+        map(actions => {
+          const avaliacoes = actions.map((a: any) => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return {
+              id,
+              ...data,
+              userId: data.userId,
+            };
+          });
+      
+          const avaliacoesComLivro = avaliacoes.map(avaliacao => ({
+            ...avaliacao,
+            livro: {
+              titulo: avaliacao.livro?.volumeInfo?.title,
+              autor: avaliacao.livro?.volumeInfo?.authors,
+              capa: avaliacao.livro?.volumeInfo?.imageLinks?.thumbnail,
+            }
+          }));
+      
+          const ultimoDocumento = actions.length ? actions[actions.length - 1].payload.doc : null;
+          return { avaliacoes: avaliacoesComLivro, ultimoDocumento };
+        })
+      );
+    }
+    
+    async getAvaliacoesByUser(uid: string): Promise<any[]> {
+      const avaliacoesSnapshot = await this.firestore
+        .collection('avaliacoes', (ref) => ref.where('usuarioId', '==', uid))
+        .get()
+        .toPromise();
+      
+      return avaliacoesSnapshot?.docs.map((doc) => doc.data()) || [];
+    }
+    
+  }      

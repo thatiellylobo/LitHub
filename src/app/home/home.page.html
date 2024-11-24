@@ -1,17 +1,44 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
     <ion-title>
-      Tab 1
+      <div class="logo-container">
+        <span class="logo-lit">Lit</span><span class="logo-hub">Hub</span>
+      </div>
     </ion-title>
   </ion-toolbar>
+  
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="carregarAvaliacoes()">
+    <ion-refresher-content pulling-text="Puxe para atualizar..." refreshing-spinner="lines">
+    </ion-refresher-content>
+  </ion-refresher>
 
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  <ion-spinner *ngIf="carregando" class="spinner-center"></ion-spinner>
+
+  <div *ngIf="!carregando && avaliacoes.length === 0" class="empty-state">
+    <p>Sem atividades no momento. Seja o primeiro a avaliar um livro!</p>
+  </div>
+
+  <ion-list *ngIf="avaliacoes.length > 0">
+    <ion-item *ngFor="let avaliacao of avaliacoes" class="item-avaliacao">
+      <ion-thumbnail slot="start">
+        <ion-img [src]="avaliacao.livro.capa" alt="Capa do livro"></ion-img>
+      </ion-thumbnail>
+      
+      <ion-label class="avaliacao-label">
+        <h2 class="avaliador-nome">{{ avaliacao.nome }}</h2>
+        <p><strong>{{ avaliacao.livro.titulo }}</strong></p>
+        <p class="autor-nome"><strong>Autor:</strong> {{ avaliacao.livro.autor }}</p>
+
+        <div class="rating">
+          <ion-icon *ngFor="let star of [1,2,3,4,5]" [name]="star <= avaliacao.rating ? 'star' : 'star-outline'"></ion-icon>
+        </div>
+        
+        <ion-text class="resenha">{{ avaliacao.reviewText || 'Nenhuma resenha disponível' }}</ion-text><br>
+        <small class="timestamp">{{ avaliacao.timestamp.toDate() | date: 'short' }}</small>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

@@ -41,7 +41,7 @@
     </ion-list>
 
     <ion-list *ngIf="tipoBusca === 'leitores'">
-      <ion-item *ngFor="let leitor of leitores">
+      <ion-item *ngFor="let leitor of leitores" (click)="abrirPerfil(leitor.uid)">
         <ion-label>
           <h2>{{ leitor.usuario }}</h2>
           <p>{{ leitor.nome }}</p>

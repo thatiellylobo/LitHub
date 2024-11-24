@@ -38,6 +38,7 @@ export class AuthService {
   async getCurrentUser() {
     return await this.afAuth.currentUser;
   }
+ 
 
   buscarLeitores(searchQuery: string) {
     return this.firestore
@@ -75,6 +76,28 @@ export class AuthService {
     } catch (error) {
       console.error('Erro ao cadastrar: ', error);
       throw error;
+    }
+  }
+
+  async isFollowing(usuarioId: string, seguidorId: string): Promise<boolean> {
+    const doc = await this.firestore
+      .collection('users')
+      .doc(usuarioId)
+      .collection('seguidores')
+      .doc(seguidorId)
+      .get()
+      .toPromise();
+    return doc?.exists || false;
+  }
+
+  async getUserData(uid: string): Promise<User | undefined> {
+    console.log('Buscando dados do usuário para UID:', uid); 
+    const userDoc = await this.firestore.collection('users').doc(uid).get().toPromise();
+  
+    if (userDoc && userDoc.exists) {
+      return userDoc.data() as User;
+    } else {
+      return undefined;
     }
   }
 

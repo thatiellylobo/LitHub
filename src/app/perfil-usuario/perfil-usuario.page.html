@@ -1,0 +1,72 @@
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+
+<div class="ion-page" id="main-content">
+  <ion-header>
+    <ion-toolbar class="top-toolbar">
+      <div class="username-container">
+        <ion-title class="username">{{ usuario.usuario }}</ion-title>
+      </div>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-header>
+    <ion-toolbar class="perfil-toolbar">
+      <div class="perfil-container">
+        <ion-card class="foto-perfil-card">
+          <ion-img src="https://via.placeholder.com/130" class="img-perfil"></ion-img>
+        </ion-card>
+        <div class="perfil-info">
+          <ion-title class="nome">{{ usuario.nome }}</ion-title>
+
+          <div class="estatisticas-container">
+            <ion-grid>
+              <ion-row class="estatisticas">
+                <ion-col class="livros">
+                  <h3><b>{{ livrosLidos || 0 }}</b></h3>
+                  <p>Livros</p>
+                </ion-col>
+                
+                <ion-col class="seguidores">
+                  <h3><b>{{ seguidores }}</b></h3>
+                  <p>Seguidores</p>
+                </ion-col>
+                <ion-col class="seguindo">
+                  <h3><b>{{ seguindo }}</b></h3>
+                  <p>Seguindo</p>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </div>
+      </div>
+    </ion-toolbar>
+  </ion-header>  
+
+  <ion-content [fullscreen]="true" class="perfil-content">
+    <div class="texto-avaliação">
+      <ion-text>Avaliações</ion-text>
+    </div>
+    <ion-list>
+      <ion-item *ngFor="let avaliacao of avaliacoes" class="item-avaliacao">
+        <ion-thumbnail slot="start">
+          <img [src]="avaliacao.livro?.volumeInfo?.imageLinks?.thumbnail || 'https://via.placeholder.com/150'" alt="Capa do livro">
+        </ion-thumbnail>
+        <ion-label>
+          <h2>{{ avaliacao.livro?.volumeInfo?.title || 'Título não disponível' }}</h2>
+          <p>{{ avaliacao.livro?.volumeInfo?.authors?.join(', ') || 'Autor desconhecido' }}</p>
+          <p><strong>Nota:</strong> 
+            <span class="estrelas-container">
+              <ion-icon 
+                  *ngFor="let i of [0, 1, 2, 3, 4]" 
+                  [name]="avaliacao.rating >= i + 1 ? 'star' : (avaliacao.rating > i && avaliacao.rating < i + 1 ? 'star-half-outline' : 'star-outline')"
+                  class="estrela">
+              </ion-icon>
+            </span>
+          </p>
+          <p><strong>Resenha:</strong> {{ avaliacao.reviewText || 'Nenhuma resenha disponível' }}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</div>
