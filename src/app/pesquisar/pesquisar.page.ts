@@ -71,7 +71,8 @@ export class PesquisarPage {
     }
   }
 
-  async buscarLeitores() {
+
+  buscarLeitores() {
     if (this.searchQuery.trim() !== '') {
       this.authService.buscarLeitores(this.searchQuery).subscribe(async (data) => {
         const currentUser = await this.authService.getCurrentUser();
@@ -87,7 +88,7 @@ export class PesquisarPage {
       this.limparBusca();
     }
   }
-
+  
   limparBusca() {
     this.searchQuery = '';
     this.livros = [];
