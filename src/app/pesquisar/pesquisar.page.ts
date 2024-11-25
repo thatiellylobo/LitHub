@@ -71,7 +71,6 @@ export class PesquisarPage {
     }
   }
 
-
   async buscarLeitores() {
     if (this.searchQuery.trim() !== '') {
       this.authService.buscarLeitores(this.searchQuery).subscribe(async (data) => {
