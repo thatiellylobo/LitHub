@@ -42,8 +42,12 @@
 
     <ion-list *ngIf="tipoBusca === 'leitores'">
       <ion-item *ngFor="let leitor of leitores" (click)="abrirPerfil(leitor.uid)">
+        <ion-thumbnail slot="start" class="thumbnail-icon">
+          <div class="user-icon-small" *ngIf="!leitor.foto">{{ leitor.nome.charAt(0).toUpperCase() }}</div>
+          <ion-img *ngIf="leitor.foto" [src]="leitor.foto"></ion-img>
+        </ion-thumbnail>
         <ion-label>
-          <h2>{{ leitor.usuario }}</h2>
+          <h2 class="nome-user">{{ leitor.usuario }}</h2>
           <p>{{ leitor.nome }}</p>
           <p>{{ leitor.email }}</p>
         </ion-label>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { AvaliacaoModalComponent } from '../avaliacao-modal/avaliacao-modal.component';  // Importando o modal
+import { AvaliacaoModalComponent } from '../avaliacao-modal/avaliacao-modal.component';  
 import { AvaliacaoService } from '../services/avaliacao.service';
 import { AuthService } from '../services/auth.service'; 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
@@ -18,6 +18,8 @@ export class PerfilPage implements OnInit {
   seguidores: number = 0; 
   seguindo: number = 0;
   livrosLidos: number = 0; 
+  usuarioFoto: string | null = null;
+  inicialUsuario: string = ''; 
 
   constructor(
     private avaliacaoService: AvaliacaoService, 
@@ -47,6 +49,8 @@ export class PerfilPage implements OnInit {
         this.seguidores = userData?.seguidores || 0; 
         this.seguindo = userData?.seguindo || 0;
         this.livrosLidos = userData?.livrosLidos || 0;
+        this.usuarioFoto = userData?.foto || null; 
+        this.gerarInicial();
         this.carregarAvaliacoes(uid);
       } else {
         console.error('Documento não encontrado ou indefinido');
@@ -61,6 +65,14 @@ export class PerfilPage implements OnInit {
     });
   }
 
+  gerarInicial() {
+    if (this.nome) {
+      this.inicialUsuario = this.nome.charAt(0).toUpperCase(); 
+    } else {
+      this.inicialUsuario = '?';
+    }
+  }
+
   async logout() {
     await this.authService.logout(); 
     this.nome = '';  
@@ -68,7 +80,6 @@ export class PerfilPage implements OnInit {
     this.router.navigate(['/login']); 
   }
 
-  
   abrirModalEdicao(avaliacao: any) {
     this.modalController.create({
       component: AvaliacaoModalComponent,
@@ -84,8 +95,6 @@ export class PerfilPage implements OnInit {
   excluirAvaliacao(avaliacaoId: string) {
     this.firestore.collection('reviews').doc(avaliacaoId).delete().then(() => {
       console.log('Avaliação excluída com sucesso');
-  
-     
       this.authService.getCurrentUser().then(user => {
         if (user) {
           this.carregarAvaliacoes(user.uid); 
@@ -95,4 +104,4 @@ export class PerfilPage implements OnInit {
       console.error('Erro ao excluir avaliação:', error);
     });
   }
-}  
+}

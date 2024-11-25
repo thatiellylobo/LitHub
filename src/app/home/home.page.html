@@ -6,10 +6,12 @@
       </div>
     </ion-title>
   </ion-toolbar>
-  
 </ion-header>
 
 <ion-content>
+  <ion-text>
+    <p class="titulo-feed"><b>Feed</b></p>
+  </ion-text>
   <ion-refresher slot="fixed" (ionRefresh)="carregarAvaliacoes()">
     <ion-refresher-content pulling-text="Puxe para atualizar..." refreshing-spinner="lines">
     </ion-refresher-content>
@@ -23,13 +25,21 @@
 
   <ion-list *ngIf="avaliacoes.length > 0">
     <ion-item *ngFor="let avaliacao of avaliacoes" class="item-avaliacao">
-      <ion-thumbnail slot="start">
+     
+      <ion-thumbnail class="thumbnail-borda">
         <ion-img [src]="avaliacao.livro.capa" alt="Capa do livro"></ion-img>
       </ion-thumbnail>
-      
+
       <ion-label class="avaliacao-label">
+        <div class="user-info">
+          <div class="user-icon" *ngIf="!avaliacao.foto">{{ avaliacao.nome.charAt(0).toUpperCase() }}
+          </div>
+          <ion-img *ngIf="avaliacao.foto" [src]="avaliacao.foto" class="user-photo"></ion-img>
         <h2 class="avaliador-nome">{{ avaliacao.nome }}</h2>
-        <p><strong>{{ avaliacao.livro.titulo }}</strong></p>
+        <p class="nova-avaliação">Publicou uma nova avaliação</p>
+        </div>
+
+        <p><strong class="nome-livro">{{ avaliacao.livro.titulo }}</strong></p>
         <p class="autor-nome"><strong>Autor:</strong> {{ avaliacao.livro.autor }}</p>
 
         <div class="rating">

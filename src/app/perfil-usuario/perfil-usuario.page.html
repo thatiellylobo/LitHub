@@ -22,8 +22,9 @@
     <ion-toolbar class="perfil-toolbar">
       <div class="perfil-container">
         <ion-card class="foto-perfil-card">
-          <ion-img src="https://via.placeholder.com/130" class="img-perfil"></ion-img>
-        </ion-card>
+          <div class="user-icon" *ngIf="!usuario.foto">{{ usuario.nome.charAt(0).toUpperCase() }}</div>
+        <ion-img *ngIf="usuario.foto" [src]="usuario.foto" class="img-perfil"></ion-img>
+      </ion-card>
         <div class="perfil-info">
           <ion-title class="nome">{{ usuario.nome }}</ion-title>
 

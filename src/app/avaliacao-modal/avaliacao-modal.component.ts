@@ -16,6 +16,7 @@ export class AvaliacaoModalComponent {
   @Input() livro: any; 
   @Input() avaliacaoExistente: any; 
   botaoTexto: string = 'Enviar Avaliação';   
+  isEditMode: boolean = false;
 
   constructor(
     private modalController: ModalController,
@@ -26,10 +27,16 @@ export class AvaliacaoModalComponent {
 
   ngOnInit() {
     if (this.avaliacaoExistente) {
+      this.isEditMode = true;
       this.botaoTexto = 'Editar';
       this.nota = this.avaliacaoExistente.rating; 
       this.resenha = this.avaliacaoExistente.reviewText; 
     }
+  }
+
+  resetCampos() {
+    this.nota = 0; 
+    this.resenha = ''; 
   }
 
   fecharModal() {

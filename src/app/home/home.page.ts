@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 interface Avaliacao {
   userId: string;
   nome: string;
+  foto?: string | null; 
   livro: {
     titulo: string;
     autor: string;
@@ -15,6 +16,7 @@ interface Avaliacao {
   rating: number;
   timestamp: any;
 }
+
 
 @Component({
   selector: 'app-home',
@@ -64,8 +66,12 @@ export class HomePage implements OnInit, OnDestroy {
         next: (res: { avaliacoes: Avaliacao[], ultimoDocumento: any }) => {
           const novasAvaliacoes = res.avaliacoes
             .filter((avaliacao: Avaliacao) =>
-              !this.avaliacoes.some(a => a.userId === avaliacao.userId) && avaliacao.userId !== this.userId 
-            );
+              !this.avaliacoes.some(a => a.userId === avaliacao.userId) && avaliacao.userId !== this.userId
+            )
+            .map(avaliacao => ({
+              ...avaliacao,
+              foto: avaliacao.foto || null 
+            }));
   
           this.avaliacoes = [...this.avaliacoes, ...novasAvaliacoes];
           this.ultimoDocumento = res.ultimoDocumento;

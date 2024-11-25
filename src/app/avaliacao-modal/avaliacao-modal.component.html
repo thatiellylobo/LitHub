@@ -40,7 +40,14 @@
         {{ botaoTexto }}
       </ion-button>
     </ion-col>
-    <ion-col size="6">
+
+    <ion-col size="6" *ngIf="!isEditMode">
+      <ion-button shape="round" expand="block" color="dark" class="reset-btn" (click)="resetCampos()">
+        Limpar
+      </ion-button>
+    </ion-col>
+
+    <ion-col size="6" *ngIf="isEditMode">
       <ion-button shape="round" expand="block" color="danger" class="excluir-btn" (click)="excluirAvaliacao()">
         Excluir
       </ion-button>

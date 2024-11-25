@@ -72,10 +72,15 @@ export class PesquisarPage {
   }
 
 
-  buscarLeitores() {
+  async buscarLeitores() {
     if (this.searchQuery.trim() !== '') {
-      this.authService.buscarLeitores(this.searchQuery).subscribe(data => {
-        this.leitores = data; 
+      this.authService.buscarLeitores(this.searchQuery).subscribe(async (data) => {
+        const currentUser = await this.authService.getCurrentUser();
+        if (currentUser) {
+          this.leitores = data.filter((leitor: any) => leitor.uid !== currentUser.uid);
+        } else {
+          this.leitores = data;
+        }
       }, error => {
         console.error('Erro ao buscar leitores:', error);
       });

@@ -39,10 +39,13 @@
     <ion-toolbar class="perfil-toolbar">
       <div class="perfil-container">
         <ion-card class="foto-perfil-card">
-          <ion-img src="https://via.placeholder.com/130" class="img-perfil"></ion-img>
+          <div class="foto-usuario" *ngIf="!usuarioFoto">
+            {{ inicialUsuario }}
+          </div>
+          <ion-img *ngIf="usuarioFoto" [src]="usuarioFoto" class="foto-real"></ion-img>
         </ion-card>
         <div class="perfil-info">
-          <ion-title class="nome">{{ nome }}</ion-title> 
+          <ion-title class="nome">{{ nome }}</ion-title>
 
           <div class="estatisticas-container">
             <ion-grid>
@@ -75,7 +78,7 @@
     </div>
     <ion-list>
       <ion-item *ngFor="let avaliacao of avaliacoes" class="item-avaliacao">
-        <ion-thumbnail slot="start">
+        <ion-thumbnail slot="start" class="borda-capa">
           <img [src]="avaliacao.livro?.volumeInfo?.imageLinks?.thumbnail || 'https://via.placeholder.com/150'" alt="Capa do livro">
         </ion-thumbnail>
         <ion-label>

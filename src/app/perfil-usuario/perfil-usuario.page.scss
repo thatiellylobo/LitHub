@@ -44,6 +44,18 @@
     margin-top: 10px; 
 }
 
+.user-icon {
+    width: 100%;
+    height: 100%;
+    background-color: #555555; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    color: white;
+    border-radius: 50%;
+  }
+
 .img-perfil {
     width: 100%; 
     height: auto;
@@ -84,3 +96,85 @@
     margin: 0; 
     font-size: 14px
 }
+
+ // detalhes da avaliação //
+
+ .perfil-content img {
+    height: auto;
+    max-width: 100%;
+    border-radius: 8px;
+  }
+
+  .texto-avaliação {
+    border-bottom: 1px solid #bbb9b9;
+    margin-top: 18px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    padding: 5px;
+    font-weight: bold;
+    font-size: 22px;
+    color: rgb(31, 31, 31);
+    padding-bottom: 15px;
+    margin-bottom: 10px;
+  }
+
+  ion-list {
+    padding: 5px; 
+  }
+  
+  ion-item {
+    align-items: flex-start; 
+    --inner-padding-start: 10px; 
+    margin-bottom: 15px; 
+    padding: 15px; 
+    border: 1px solid #e0e0e0; 
+    border-radius: 10px; 
+    background-color: #fff; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .estrelas-container ion-icon {
+    color: #f39c12; 
+    font-size: 15px; 
+    margin-right: 2px; 
+  }
+
+  ion-thumbnail {
+    width: 100px; 
+    height: 140px;
+    border-radius: 8px; 
+    margin-right: 8px; 
+    margin-left: -7px;
+  }
+  
+  img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+  }
+  
+  ion-label {
+    flex: 1; 
+    display: flex;
+    flex-direction: column; 
+    gap: 5px; 
+  }
+  
+  h2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 0; 
+  }
+  
+  p {
+    margin: 0; 
+    font-size: 14px; 
+  }
+  
+  strong {
+    font-weight: bold;
+  }
+
+  .item-avaliacao {
+    position: relative;
+  }
