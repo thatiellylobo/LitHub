@@ -1,81 +1,86 @@
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
 <ion-content class="pagina-content" fullscreen>
   <ion-toolbar class="toolbar-fino">
- <ion-buttons slot="start">
-   <ion-button (click)="voltar()" size="large" class="btn-voltar">
-     <ion-icon name="arrow-back"></ion-icon>
-   </ion-button>
- </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-button (click)="voltar()" size="large" class="btn-voltar">
+        <ion-icon name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
   
-<div class="ion-page" id="main-content">
-  <ion-header>
-    <ion-toolbar class="top-toolbar">
-      <div class="username-container">
-        <ion-title class="username">{{ usuario.usuario }}</ion-title>
-      </div>
-    </ion-toolbar>
-  </ion-header>
+  <div class="ion-page" id="main-content">
+    <ion-header>
+      <ion-toolbar class="top-toolbar">
+        <div class="username-container">
+          <ion-title class="username">{{ usuario?.usuario || 'Carregando...' }}</ion-title>
+        </div>
+      </ion-toolbar>
+    </ion-header>
 
-  <ion-header>
-    <ion-toolbar class="perfil-toolbar">
-      <div class="perfil-container">
-        <ion-card class="foto-perfil-card">
-          <div class="user-icon" *ngIf="!usuario.foto">{{ usuario.nome.charAt(0).toUpperCase() }}</div>
-        <ion-img *ngIf="usuario.foto" [src]="usuario.foto" class="img-perfil"></ion-img>
-      </ion-card>
-        <div class="perfil-info">
-          <ion-title class="nome">{{ usuario.nome }}</ion-title>
+    <ion-header>
+      <ion-toolbar class="perfil-toolbar">
+        <div class="perfil-container">
+          <ion-card class="foto-perfil-card">
+            <div class="user-icon" *ngIf="!usuario?.foto">{{ usuario?.nome?.charAt(0).toUpperCase() }}</div>
+            <ion-img *ngIf="usuario?.foto" [src]="usuario?.foto" class="img-perfil"></ion-img>
+          </ion-card>
+          <div class="perfil-info">
+            <ion-title class="nome">{{ usuario?.nome || 'Carregando...' }}</ion-title>
 
-          <div class="estatisticas-container">
-            <ion-grid>
-              <ion-row class="estatisticas">
-                <ion-col class="livros">
-                  <h3><b>{{ livrosLidos || 0 }}</b></h3>
-                  <p>Livros</p>
-                </ion-col>
-                
-                <ion-col class="seguidores">
-                  <h3><b>{{ seguidores }}</b></h3>
-                  <p>Seguidores</p>
-                </ion-col>
-                <ion-col class="seguindo">
-                  <h3><b>{{ seguindo }}</b></h3>
-                  <p>Seguindo</p>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+            <div class="estatisticas-container" *ngIf="!isLoading">
+              <ion-grid>
+                <ion-row class="estatisticas">
+                  <ion-col class="livros">
+                    <h3><b>{{ livrosLidos || 0 }}</b></h3>
+                    <p>Livros</p>
+                  </ion-col>
+
+                  <ion-col class="seguidores">
+                    <h3><b>{{ seguidores }}</b></h3>
+                    <p>Seguidores</p>
+                  </ion-col>
+                  <ion-col class="seguindo">
+                    <h3><b>{{ seguindo }}</b></h3>
+                    <p>Seguindo</p>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </div>
+            <ion-button (click)="seguirOuDeixarDeSeguir()" *ngIf="!isLoading" class="btn-seguir" shape="round" color="dark">{{ estadoSegue ? 'Deixar de Seguir' : 'Seguir' }}</ion-button>
           </div>
         </div>
-      </div>
-    </ion-toolbar>
-  </ion-header>  
+      </ion-toolbar>
+    </ion-header>
 
-  <ion-content [fullscreen]="true" class="perfil-content">
-    <div class="texto-avaliação">
-      <ion-text>Avaliações</ion-text>
+    <!-- Indicador de carregamento -->
+    <div *ngIf="isLoading" class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
     </div>
-    <ion-list>
-      <ion-item *ngFor="let avaliacao of avaliacoes" class="item-avaliacao">
-        <ion-thumbnail slot="start">
-          <img [src]="avaliacao.livro?.volumeInfo?.imageLinks?.thumbnail || 'https://via.placeholder.com/150'" alt="Capa do livro">
-        </ion-thumbnail>
-        <ion-label>
-          <h2>{{ avaliacao.livro?.volumeInfo?.title || 'Título não disponível' }}</h2>
-          <p>{{ avaliacao.livro?.volumeInfo?.authors?.join(', ') || 'Autor desconhecido' }}</p>
-          <p><strong>Nota:</strong> 
-            <span class="estrelas-container">
-              <ion-icon 
-                  *ngFor="let i of [0, 1, 2, 3, 4]" 
-                  [name]="avaliacao.rating >= i + 1 ? 'star' : (avaliacao.rating > i && avaliacao.rating < i + 1 ? 'star-half-outline' : 'star-outline')"
-                  class="estrela">
-              </ion-icon>
-            </span>
-          </p>
-          <p><strong>Resenha:</strong> {{ avaliacao.reviewText || 'Nenhuma resenha disponível' }}</p>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-  </ion-content>
-</div>
+
+    <ion-content [fullscreen]="true" class="perfil-content" *ngIf="!isLoading">
+      <div class="texto-avaliação">
+        <ion-text>Avaliações</ion-text>
+      </div>
+      <ion-list>
+        <ion-item *ngFor="let avaliacao of avaliacoes" class="item-avaliacao">
+          <ion-thumbnail slot="start">
+            <img [src]="avaliacao.livro?.volumeInfo?.imageLinks?.thumbnail || 'https://via.placeholder.com/150'" alt="Capa do livro">
+          </ion-thumbnail>
+          <ion-label>
+            <h2>{{ avaliacao.livro?.volumeInfo?.title || 'Título não disponível' }}</h2>
+            <p>{{ avaliacao.livro?.volumeInfo?.authors?.join(', ') || 'Autor desconhecido' }}</p>
+            <p><strong>Nota:</strong> 
+              <span class="estrelas-container">
+                <ion-icon 
+                    *ngFor="let i of [0, 1, 2, 3, 4]" 
+                    [name]="avaliacao.rating >= i + 1 ? 'star' : (avaliacao.rating > i && avaliacao.rating < i + 1 ? 'star-half-outline' : 'star-outline')"
+                    class="estrela">
+                </ion-icon>
+              </span>
+            </p>
+            <p><strong>Resenha:</strong> {{ avaliacao.reviewText || 'Nenhuma resenha disponível' }}</p>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </div>
+</ion-content>

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { AvaliacaoService } from '../services/avaliacao.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { SeguidoresService } from '../services/seguidores.service'; 
 import { NavController } from '@ionic/angular';
 
 @Component({
@@ -14,15 +15,17 @@ export class PerfilUsuarioPage implements OnInit {
   usuario: any = null;
   avaliacoes: any[] = [];
   seguidores: number = 0;
-  seguindo: boolean = false;  
+  seguindo: boolean = false;
   livrosLidos: number = 0;
-
+  estadoSegue: boolean = false;
+  isLoading: boolean = true; 
 
   constructor(
     private route: ActivatedRoute,
     private authService: AuthService,
     private avaliacaoService: AvaliacaoService,
     private firestore: AngularFirestore,
+    private seguidoresService: SeguidoresService, 
     private navCtrl: NavController
   ) {}
 
@@ -30,8 +33,10 @@ export class PerfilUsuarioPage implements OnInit {
     const uid = this.route.snapshot.paramMap.get('uid');
     if (uid) {
       this.usuario = await this.authService.getUserData(uid);
-      this.carregarPerfil(uid);
-      this.carregarAvaliacoes(uid);
+      await this.carregarPerfil(uid);
+      await this.carregarAvaliacoes(uid);
+      await this.verificarSeSegue(uid);
+      this.isLoading = false; 
     }
   }
 
@@ -39,28 +44,39 @@ export class PerfilUsuarioPage implements OnInit {
     this.navCtrl.back();
   }
 
-  carregarPerfil(uid: string) {
-    this.firestore.collection('users').doc(uid).get().toPromise().then(doc => {
-      if (doc?.exists) {
-        const userData = doc.data() as any;
+ async carregarPerfil(uid: string) {
+    this.firestore.collection('users').doc(uid).snapshotChanges().subscribe(doc => {
+      if (doc.payload.exists) {
+        const userData = doc.payload.data() as any;
         this.seguidores = userData?.seguidores || 0;
-        this.seguindo = userData?.seguindo || 0;
         this.livrosLidos = userData?.livrosLidos || 0;
+        this.seguindo = userData?.seguindo || 0;  
       }
-      
     });
   }
+  
 
-  carregarAvaliacoes(uid: string) {
-    this.avaliacaoService.getAvaliacoesPorUsuario(uid).subscribe(avaliacoes => {
+ async carregarAvaliacoes(uid: string) {
+    return this.avaliacaoService.getAvaliacoesPorUsuario(uid).subscribe(avaliacoes => {
       this.avaliacoes = avaliacoes;
       this.livrosLidos = this.avaliacoes.length;
     });
   }
 
-  abrirModalEdicao(avaliacao: any) {
-    // Lógica para abrir o modal de edição da avaliação
+  async verificarSeSegue(uid: string) {
+    const currentUserId = await this.authService.getCurrentUserId();
+    if (currentUserId) {
+      this.estadoSegue = await this.seguidoresService.usuarioSegue(uid, currentUserId);
+    }
   }
+
+  async seguirOuDeixarDeSeguir() {
+    if (this.estadoSegue) {
+      this.deixarDeSeguir();
+    } else {
+      this.seguirUsuario();
+    }
+  }  
 
   async seguirUsuario() {
     if (this.usuario) {
@@ -69,11 +85,15 @@ export class PerfilUsuarioPage implements OnInit {
         console.error('Usuário não autenticado');
         return;
       }
-      await this.authService.seguirUsuario(this.usuario.uid, currentUserId);
-      this.seguindo = true;
+      
+      await this.seguidoresService.seguirUsuario(this.usuario.uid, currentUserId);
+      this.estadoSegue = true;
+      this.seguidores++; 
+      
+      this.carregarPerfil(this.usuario.uid); 
     }
   }
-
+  
   async deixarDeSeguir() {
     if (this.usuario) {
       const currentUserId = await this.authService.getCurrentUserId();
@@ -81,17 +101,12 @@ export class PerfilUsuarioPage implements OnInit {
         console.error('Usuário não autenticado');
         return;
       }
-      await this.authService.deixarDeSeguirUsuario(this.usuario.uid, currentUserId);
-      this.seguindo = false;
+      
+      await this.seguidoresService.deixarDeSeguirUsuario(this.usuario.uid, currentUserId);
+      this.estadoSegue = false;
+      this.seguidores--; 
+
+      this.carregarPerfil(this.usuario.uid); 
     }
   }
-
-  async verificarSeSegue(uid: string) {
-    const currentUserId = await this.authService.getCurrentUserId();
-    if (currentUserId) {
-      this.seguindo = await this.authService.isFollowing(uid, currentUserId);
-    }
-  }  
 }
-
-
