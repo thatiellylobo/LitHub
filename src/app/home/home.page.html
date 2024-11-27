@@ -32,10 +32,10 @@
 
       <ion-label class="avaliacao-label">
         <div class="user-info">
-          <div class="user-icon" *ngIf="!avaliacao.foto">{{ avaliacao.nome.charAt(0).toUpperCase() }}
+          <div class="user-icon" *ngIf="!avaliacao.foto" (click)="irParaPerfil(avaliacao.userId)">{{ avaliacao.nome.charAt(0).toUpperCase() }}
           </div>
           <ion-img *ngIf="avaliacao.foto" [src]="avaliacao.foto" class="user-photo"></ion-img>
-        <h2 class="avaliador-nome">{{ avaliacao.nome }}</h2>
+        <h2 class="avaliador-nome" (click)="irParaPerfil(avaliacao.userId)">{{ avaliacao.nome }}</h2>
         <p class="nova-avaliação">Publicou uma nova avaliação</p>
         </div>
 

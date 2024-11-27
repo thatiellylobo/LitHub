@@ -3,6 +3,10 @@ import { ModalController } from '@ionic/angular';
 import { AvaliacaoService } from '../services/avaliacao.service';
 import { AuthService } from '../services/auth.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { FieldValue } from 'firebase/firestore';
+import { getFirestore, doc, updateDoc, increment } from 'firebase/firestore';
+
+
 
 @Component({
   selector: 'app-avaliacao-modal',
@@ -52,7 +56,6 @@ export class AvaliacaoModalComponent {
       this.nota = nota;
     }
   }
-
   async confirmarAvaliacao() {
     const user = await this.authService.getCurrentUser(); // Já pega o usuário autenticado
     if (user) {
@@ -60,7 +63,8 @@ export class AvaliacaoModalComponent {
         // Buscando os dados completos do usuário
         const userData = await this.authService.getUserData(user.uid);
         const nomeUsuario = userData?.nome || 'Usuário não encontrado'; 
-        
+  
+        // Atualizar ou criar avaliação
         if (this.avaliacaoExistente) {
           console.log('Atualizando avaliação existente.');
           const resenhaId = this.avaliacaoExistente.id;
@@ -85,6 +89,11 @@ export class AvaliacaoModalComponent {
           await this.avaliacaoService.adicionarAvaliacao(reviewData);
         }
   
+        const userDocRef = doc(getFirestore(), 'users', user.uid); 
+        await updateDoc(userDocRef, {
+          livrosLidos: increment(1), 
+        });
+  
         this.modalController.dismiss({
           resenhaConfirmada: true,
         });
@@ -94,7 +103,7 @@ export class AvaliacaoModalComponent {
     } else {
       console.error('Usuário não autenticado');
     }
-  }
+  }  
   
   async excluirAvaliacao() {
     if (this.avaliacaoExistente) {

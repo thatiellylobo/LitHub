@@ -78,6 +78,11 @@ export class PerfilPage implements OnInit {
     this.nome = '';  
     this.username = ''; 
     this.router.navigate(['/login']); 
+
+    const menu = document.querySelector('ion-menu');
+    if (menu) {
+      (menu as any).close();
+    }
   }
 
   abrirModalEdicao(avaliacao: any) {

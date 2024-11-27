@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AvaliacaoService } from '../services/avaliacao.service';
 import { AuthService } from '../services/auth.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 interface Avaliacao {
   userId: string;
@@ -33,7 +34,8 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(
     private avaliacaoService: AvaliacaoService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
   ) {}
 
   ngOnInit() {
@@ -84,5 +86,9 @@ export class HomePage implements OnInit, OnDestroy {
           this.carregandoMais = false;
         },
       });
-  }
+    }
+
+    irParaPerfil(uid: string) {
+      this.router.navigate([`/perfil-usuario/${uid}`]);
+    }    
 }  
