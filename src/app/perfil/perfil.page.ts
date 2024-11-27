@@ -41,9 +41,9 @@ export class PerfilPage implements OnInit {
   }
 
   carregarPerfil(uid: string) {
-    this.firestore.collection('users').doc(uid).get().toPromise().then(doc => {
-      if (doc && doc.exists) {
-        const userData = doc.data() as any;
+    this.firestore.collection('users').doc(uid).snapshotChanges().subscribe(doc => {
+      if (doc.payload.exists) {
+        const userData = doc.payload.data() as any;
         this.nome = userData?.nome || '';
         this.username = userData?.usuario || '';
         this.seguidores = userData?.seguidores || 0; 
@@ -52,12 +52,10 @@ export class PerfilPage implements OnInit {
         this.usuarioFoto = userData?.foto || null; 
         this.gerarInicial();
         this.carregarAvaliacoes(uid);
-      } else {
-        console.error('Documento não encontrado ou indefinido');
       }
     });
   }
-
+  
   carregarAvaliacoes(uid: string) {
     this.avaliacaoService.getAvaliacoesPorUsuario(uid).subscribe(avaliacoes => {
       this.avaliacoes = avaliacoes;

@@ -5,6 +5,7 @@ import { AvaliacaoService } from '../services/avaliacao.service';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { SeguidoresService } from '../services/seguidores.service'; 
 import { NavController } from '@ionic/angular';
+import firebase from 'firebase/compat/app';
 
 @Component({
   selector: 'app-perfil-usuario',
@@ -85,11 +86,11 @@ export class PerfilUsuarioPage implements OnInit {
         console.error('Usuário não autenticado');
         return;
       }
-      
+  
       await this.seguidoresService.seguirUsuario(this.usuario.uid, currentUserId);
+  
       this.estadoSegue = true;
       this.seguidores++; 
-      
       this.carregarPerfil(this.usuario.uid); 
     }
   }
@@ -101,12 +102,12 @@ export class PerfilUsuarioPage implements OnInit {
         console.error('Usuário não autenticado');
         return;
       }
-      
+  
       await this.seguidoresService.deixarDeSeguirUsuario(this.usuario.uid, currentUserId);
+  
       this.estadoSegue = false;
       this.seguidores--; 
-
       this.carregarPerfil(this.usuario.uid); 
     }
   }
-}
+}  
